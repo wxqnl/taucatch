@@ -152,7 +152,7 @@ flowchart LR
 ## 快速开始
 
 ```bash
-git clone --recurse-submodules --shallow-submodules https://github.com/wxqnl/taucatch.git
+git clone https://github.com/wxqnl/taucatch.git
 cd taucatch
 ```
 
@@ -206,7 +206,7 @@ taucatch/
 ├── docs/                算法、结果、复现、代码导航、硬件、部署简报及其图
 ├── requirements/        replay / simulation / visualization 三组最小依赖
 └── third_party/
-    └── mujoco_menagerie/  子模块：FR3 机械臂、Shadow Hand、Allegro Hand 模型
+    └── mujoco_menagerie/  FR3 机械臂、Shadow Hand、Allegro Hand 模型（Menagerie cda5236）
 ```
 
 ## 文档
@@ -237,6 +237,6 @@ taucatch/
 
 ## 依赖与许可
 
-- 仿真模型来自 [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie)（子模块，固定在 `cda5236`），各模型保留其原许可证。
+- 仿真模型取自 [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie) 提交 `cda5236`，未修改，各模型保留其原许可证（见 [`third_party/`](third_party/README.md)）。
 - SpikeVLA 架构与训练框架来自配套上游仓库，不随本仓库分发。
 - 本仓库的研究代码与权重暂未声明开源许可证。
