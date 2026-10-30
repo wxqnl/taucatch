@@ -1,4 +1,4 @@
-"""Figures for taucatch/docs/leader_brief.md (numbers from docs/results.md, artifacts/evidence, archived research_plan.md)."""
+"""Figures for docs/roadmap.md (numbers from docs/results.md, artifacts/evidence, archived research_plan.md)."""
 import sys
 from pathlib import Path
 

@@ -34,7 +34,7 @@
 | 从观测到修正可执行 | 48 | 21.57 ms | 17.83–27.23 ms | 观测时刻到动作实际到达控制端 |
 | 早先 transport-621 传输验收 | 3 | 11.24 ms | 最大 11.46 ms | 同一融合模型，通过当轮验收 |
 
-![SpikeVLA 时延](figures/leader/latency.png)
+![SpikeVLA 时延](figures/roadmap/latency.png)
 
 一个动作段 16 ms，一条修正的有效期 192 ms；最慢一次也只用了 27.23 ms，VLA 开启的 6 次闭环中所有修正都在有效期内到达。逐次请求的时间戳在[完成报告](../artifacts/evidence/generalization/completion.json)的 `requests_summary` 中，`python tools/handoff.py results` 会从中重算上表；transport-621 的记录见 [RPC 验收](../artifacts/evidence/latency/transport621_rpc_gate.json)。
 

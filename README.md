@@ -9,7 +9,7 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-111a24)
 ![球速](https://img.shields.io/badge/球速-12–25%20m%2Fs-eb6834)
 
-<img src="docs/figures/leader/tennis25_events.gif" width="720" alt="网球 25 m/s，事件相机快环接球，20 倍慢放">
+<img src="docs/figures/roadmap/tennis25_events.gif" width="720" alt="网球 25 m/s，事件相机快环接球，20 倍慢放">
 
 <sub>网球 25 m/s，20 倍慢放。左下是事件相机看到的画面（绿圈为网络找到的球，青色为预测轨迹），右下是 TauCatch 神经元按时间常数排列的活动。出手后 111 ms 接触。</sub>
 
@@ -36,9 +36,9 @@
 | 事件相机快环（仿真） | ✅ 可用 | 从事件流接住 12–25 m/s 的乒乓球和网球；落点在手附近时接住 70–94%，与真实球状态的上限相差不超过 5 个百分点 |
 | TauCatch 预测网络 | ✅ 可用 | 多时间常数神经元在每个时刻都比单一时间常数预测得准；出手瞬间误差 20.2 cm，LSTM 为 29.1 cm |
 | SpikeVLA 接入闭环 | ✅ 已接通 | 融合方案：飞行中请求往返中位 11.49 ms，修正按真实到达时间执行 |
-| SpikeVLA 带来的增益 | ⚠️ 尚未证明 | 6 组训练外投球：快环单独 4/6，加 SpikeVLA 3/6 |
-| SpikeVLA 端到端直接出动作 | ❌ 暂不可用 | 闭环 32 次只接住 0–1 次 |
-| 真机 | ⚪ 未开始 | 路线、硬件和预算见[部署简报](docs/leader_brief.md) |
+| SpikeVLA 带来的增益 | ⚠️ 待验证 | 6 组训练外投球：快环单独 4/6，加 SpikeVLA 3/6 |
+| SpikeVLA 端到端直接出动作 | ❌ 暂缓 | 闭环 32 次只接住 0–1 次 |
+| 真机 | ⚪ 待启动 | 推进顺序、硬件和预算见[进展与真机计划](docs/roadmap.md) |
 
 ## 系统结构
 
@@ -70,16 +70,16 @@ flowchart LR
 
 下图是一次记录下来的接球（训练外投球 1100060，18 m/s，SpikeVLA 开启，接住）。四次修正请求都在有效期内到达。
 
-![一次接球的时间线](docs/figures/leader/catch_timeline.png)
+![一次接球的时间线](docs/figures/roadmap/catch_timeline.png)
 
 ## 演示
 
 | 长距离：手移动 40 cm | 按指令选球 |
 |:-:|:-:|
-| <img src="docs/figures/leader/reach40_pingpong.gif" width="400" alt="长距离接球"> | <img src="docs/figures/leader/select_mixed.gif" width="400" alt="按指令选球"> |
+| <img src="docs/figures/roadmap/reach40_pingpong.gif" width="400" alt="长距离接球"> | <img src="docs/figures/roadmap/select_mixed.gif" width="400" alt="按指令选球"> |
 | 乒乓球 16 m/s，带 20 转/秒旋转。半透明的臂是起始位置，橙线是手掌走过的路径。207 ms 接触。 | 指令“接住会到达你左侧的那个球”。SpikeVLA 给每个球编号并选出目标，出手后 33 ms 选定，276 ms 接触。 |
 | **真实速度（网球 25 m/s）** | **训练外投球 1100060 复演** |
-| <img src="docs/figures/leader/tennis25_realtime.gif" width="400" alt="真实速度"> | <img src="docs/figures/handoff_saved_trajectory.gif" width="400" alt="保存轨迹复演"> |
+| <img src="docs/figures/roadmap/tennis25_realtime.gif" width="400" alt="真实速度"> | <img src="docs/figures/handoff_saved_trajectory.gif" width="400" alt="保存轨迹复演"> |
 | 整个过程约 0.11 秒，人眼几乎看不清。 | 18 m/s，SpikeVLA 开启，接住。由保存的球与掌心轨迹重绘。 |
 
 ## 主要结果
@@ -90,7 +90,7 @@ flowchart LR
 
 每组 64 次投球，落点在手附近 ±15 cm。真值上限是把真实球状态直接交给同一控制器的结果。
 
-<img src="docs/figures/leader/events_vs_truth.png" width="720" alt="事件相机快环与真值上限">
+<img src="docs/figures/roadmap/events_vs_truth.png" width="720" alt="事件相机快环与真值上限">
 
 | 投球 | 事件相机快环 | 真值上限 |
 |---|---:|---:|
@@ -103,7 +103,7 @@ flowchart LR
 
 快神经元一出手就给出初猜，慢神经元积累证据，修正旋转造成的弯曲。乒乓球预测误差（cm）：
 
-<img src="docs/figures/leader/tau_error.png" width="720" alt="预测误差随时间下降">
+<img src="docs/figures/roadmap/tau_error.png" width="720" alt="预测误差随时间下降">
 
 | 出手后 | 0 ms | 10 ms | 20 ms | 50 ms | 100 ms | 150 ms |
 |---|---:|---:|---:|---:|---:|---:|
@@ -115,7 +115,7 @@ flowchart LR
 
 乒乓球 16 m/s。“快速臂”约相当于手可达 4 m/s、4 g 的高速臂；“普通臂”约为 Panda 的 1.5 倍速度。
 
-<img src="docs/figures/leader/long_reach.png" width="720" alt="长距离接球">
+<img src="docs/figures/roadmap/long_reach.png" width="720" alt="长距离接球">
 
 | 手移动距离 | 25 cm | 32 cm | 40 cm | 45 cm |
 |---|---:|---:|---:|---:|
@@ -145,7 +145,7 @@ flowchart LR
 | 从观测到修正可执行 | 48 | 21.57 ms | 17.83–27.23 ms |
 | 出手前选球（指令已缓存，服务端） | 36 | 6.4 ms | P95 6.5 ms |
 
-<img src="docs/figures/leader/latency.png" width="720" alt="SpikeVLA 时延">
+<img src="docs/figures/roadmap/latency.png" width="720" alt="SpikeVLA 时延">
 
 最慢的一次修正 27.23 ms 到达，远小于 192 ms 的有效期。真机需要在部署用的 GPU 上对采集、计算、传输分段重测。
 
@@ -166,7 +166,7 @@ python -m pip install -r requirements/replay.txt
 CUDA_VISIBLE_DEVICES= python scripts/replay_fusion.py   # CPU 复演融合头，核对保存的 12×3 动作
 ```
 
-复演只验证融合层计算和动作接口，不运行完整 SpikeVLA、事件感知或物理接球。
+复演核对融合层的计算和 12×3 动作接口；完整闭环的依赖见下文。
 
 <details>
 <summary><b>仿真环境、测试与重绘图</b></summary>
@@ -181,7 +181,7 @@ python -m pytest tests/test_action_h192_195536.py     # 12×16 ms 时间网格�
 python -m pip install -r requirements/visualization.txt
 python tools/plot_results.py                          # 6 组配对结果图
 python tools/render_saved_trajectory.py               # 保存轨迹 GIF
-python tools/plot_leader_brief.py docs/figures/leader # 部署简报中的图（需要中文字体）
+python tools/plot_roadmap.py docs/figures/roadmap   # 进展与真机计划中的图（需要中文字体）
 ```
 
 渲染用 CPU 上的 OSMesa（`MUJOCO_GL=osmesa`）。修改代码或图后，先运行 `python tools/handoff.py refresh` 更新校验清单，再运行 `verify`。
@@ -203,7 +203,7 @@ taucatch/
 │   ├── models/          fusion-617 adapter 与融合头权重
 │   ├── examples/        CPU 复演样本、1100060 轨迹
 │   └── MANIFEST.sha256  全部精选文件的校验清单
-├── docs/                算法、结果、复现、代码导航、硬件、部署简报及其图
+├── docs/                算法、结果、复现、代码导航、硬件、进展与真机计划及其图
 ├── requirements/        replay / simulation / visualization 三组最小依赖
 └── third_party/
     └── mujoco_menagerie/  FR3 机械臂、Shadow Hand、Allegro Hand 模型（Menagerie cda5236）
@@ -213,7 +213,7 @@ taucatch/
 
 | 文档 | 内容 |
 |---|---|
-| [部署简报](docs/leader_brief.md) | 进展、上真机的三条路线、分阶段计划、硬件推荐与预算、风险 |
+| [进展与真机计划](docs/roadmap.md) | 进展、真机推进顺序、SpikeVLA 训练步骤、硬件与预算、风险 |
 | [算法说明](docs/algorithm.md) | 输入输出、快慢环如何结合、动作块的时间规则 |
 | [结果与证据](docs/results.md) | 配对成绩、时延、训练与问题定位，每项附原始记录 |
 | [复现与训练](docs/reproduction.md) | 安装、CPU 复演、完整闭环依赖、训练方法 |
@@ -223,17 +223,18 @@ taucatch/
 
 ## 上真机
 
-真机走融合方案：快环负责接住，SpikeVLA 在慢环里做位置修正和指令理解。
+快环先在真机上接住球并积累数据，SpikeVLA 再用这些数据训练，逐步接管更多控制。
 
-| 阶段 | 内容 | 通过标准 |
-|---|---|---|
-| 0 | 按 FR3 真实限制重做仿真；把快环起步从 44 ms 提前到 0–5 ms；在部署 GPU 上分段计时 | 仿真复现，时延分段可查 |
-| 1 | 搭台、标定、相机与机器人时间同步 | 同步误差 0.1–0.2 ms 量级 |
-| 2 | 接球杯 + 快环基线，8–12 m/s 网球 | 每档球速至少 50 次 |
-| 3 | SpikeVLA 开关配对对比 | 留出集上接住率净提升 |
-| 4 | 灵巧手 + 按指令选球 | 选对并接住 |
+| 阶段 | 控制方案 | 做法 | 进入下一阶段 |
+|---|---|---|---|
+| 0 仿真对齐 | 仿真 | 按 FR3 限制重跑；起动提前到 5 ms 内；部署 GPU 上分段测时延 | 首个真机球速确定 |
+| 1 搭台标定 | — | 双目标定；同步线 + PTP；动作捕捉测跟踪误差 | 跟踪误差、链路时延实测完成 |
+| 2 快环接球 | 快环 + 接球杯 | 5 → 8 → 12 m/s；每次投球全量记录 | 每档 ≥50 次，接住率可重复 |
+| 3 SpikeVLA 训练 | 快环控制，SpikeVLA 影子运行 | 动作捕捉事后标签 + 仿真数据训练修正 | 修正后接球点误差低于快环 |
+| 4 融合闭环 | 快环 + SpikeVLA 修正 | 开关配对；闭环数据回流再训练 | ≥50 组配对，接住率更高 |
+| 5 最终形态 | SpikeVLA 选球、修正、接管手掌朝向和闭合 | Allegro 手；多球按指令接 | 按指令接住指定的球 |
 
-起步硬件：Franka FR3 + 接球杯、双目 DVXplorer 事件相机、全局快门 RGB 相机、专用推理 GPU，约 4–6 万欧元（以询价为准）。首个真机目标为 8–12 m/s 网球。清单、对比和理由见[部署简报第 6–7 节](docs/leader_brief.md#6-上真机路线与分阶段计划)。
+起步硬件：FR3 + 接球杯、双目 DVXplorer、全局快门 RGB 相机、专用 GPU，约 €40–56k；首个目标 8–12 m/s 网球。完整计划、训练步骤和硬件清单见[进展与真机计划](docs/roadmap.md#5-真机计划)。
 
 ## 依赖与许可
 
