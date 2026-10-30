@@ -1,0 +1,4 @@
+{
+  "status": "historical_structure_examples_not_ready_to_run",
+  "reason": "Frozen local paths, inputs, gates and source hashes require migration and new numeric/latency acceptance; not a portable launcher"
+}

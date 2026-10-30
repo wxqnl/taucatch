@@ -1,0 +1,590 @@
+{
+  "scope": "Curated implementation and handoff tools; source bytes identified by SHA256",
+  "files": [
+    {
+      "path": "scripts/audit_xyz_fusion_hardnegative_v616.py",
+      "sha256": "44571f27548ee602bf379d0832ef44993dd341f04ba1bef9f8c377aa661f860a",
+      "bytes": 4031
+    },
+    {
+      "path": "scripts/audit_xyz_fusion_v606.py",
+      "sha256": "ec1abfcd6495646b38328263113b848c31f98979bf5d9840c6c2a5dc08ea0723",
+      "bytes": 22309
+    },
+    {
+      "path": "scripts/check_xyz_fusion_RPC_v608.py",
+      "sha256": "6a9f0fbbc507149847024182320d10a95bc987b4ed553e894fc7fc719790e5fa",
+      "bytes": 2329
+    },
+    {
+      "path": "scripts/check_xyz_fusion_actual_v604.py",
+      "sha256": "44e3bec2c977103dbc91e1c43e2aae518ad655417a51f88a00e57eb7ab62cf6c",
+      "bytes": 4213
+    },
+    {
+      "path": "scripts/chooser_server.py",
+      "sha256": "8e4592ded3d1afd9767be55b56a6e50d752fcc9492475247d7c79762828cc64e",
+      "bytes": 8939
+    },
+    {
+      "path": "scripts/collect_single_ball_v1.py",
+      "sha256": "b457462b7e3cb5272803f6579d1fc7479dc21c4f5b1c4f798f9b9b6e0d2ae30b",
+      "bytes": 9249
+    },
+    {
+      "path": "scripts/collect_xyz_fusion_v605.py",
+      "sha256": "df368fac2059347d106f7ec98b8e6053027c6a72deaa1d11fc19b3a7cac91583",
+      "bytes": 16103
+    },
+    {
+      "path": "scripts/eval_volley_vla.py",
+      "sha256": "01bb94591dc69bb4fc6737890116b39d381d4bb99b184172458459f918452db2",
+      "bytes": 16522
+    },
+    {
+      "path": "scripts/fit_xyz_frozen_fusion_v663.py",
+      "sha256": "4c843ac8f901d8321ef4971a592f75033c67baee6421f9278b9e74e3aec4c469",
+      "bytes": 6932
+    },
+    {
+      "path": "scripts/fit_xyz_fusion_hardnegative_v615.py",
+      "sha256": "c52b59ca181ebf89a022a24fa9bffa9cc6a09699f1a03fecd203956082b61e87",
+      "bytes": 12186
+    },
+    {
+      "path": "scripts/replay_fusion.py",
+      "sha256": "01a46ba306068b5c3a87ab68d34dc316260792e9b80621096609a9fd7bba00c7",
+      "bytes": 1800
+    },
+    {
+      "path": "scripts/serve_single_ball_h192_195536.py",
+      "sha256": "8b3e2cf0b393ba263e029a3a74cac6c892f8b83d9510c53b934c853613a48696",
+      "bytes": 6356
+    },
+    {
+      "path": "scripts/serve_xyz_fusion_v603.py",
+      "sha256": "03e336fb5773c238bcea3a568395fdb9c2aec45e96bcb41f1e53f832b6db4b05",
+      "bytes": 9147
+    },
+    {
+      "path": "scripts/train_action_h96.py",
+      "sha256": "115179bb4b49a422e15071701c11a3623fc1c38c6e442d4fb6e978b2a7329077",
+      "bytes": 11643
+    },
+    {
+      "path": "scripts/train_action_policy.py",
+      "sha256": "ac240644039ded54e99a6690976a8303ec48e0558289d300138eadae1ce35391",
+      "bytes": 11053
+    },
+    {
+      "path": "scripts/train_native_rich_v110.py",
+      "sha256": "dbc4f6e2645edf20883b04ac0d16b502d9794cf02406f484319649a2ed0c8636",
+      "bytes": 12495
+    },
+    {
+      "path": "scripts/train_native_space_v91.py",
+      "sha256": "68f4d5e15f4f88d24f1b1fd94699258d4df428618e7d58b74d39fc8547e2fd32",
+      "bytes": 7463
+    },
+    {
+      "path": "scripts/train_single_ball_h192_195536.py",
+      "sha256": "302d4d4a2ad8553f5e7eb60215d1145171404030c41a504c5f7961989c8ed2a7",
+      "bytes": 5600
+    },
+    {
+      "path": "taucatch/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "taucatch/action_catcher.py",
+      "sha256": "0c1fa986e8423e9fae55058db9540aae56768c17f33a4da90a5db6faec1aad71",
+      "bytes": 2892
+    },
+    {
+      "path": "taucatch/action_chunk.py",
+      "sha256": "da8942969f8112995010ed03a09fe6a57d6d561611048e82df35bce05d925632",
+      "bytes": 3593
+    },
+    {
+      "path": "taucatch/action_data.py",
+      "sha256": "aa70d6f6806062e67d3fd37667b987bf04b21ebf668567421692874c1220d8b4",
+      "bytes": 4991
+    },
+    {
+      "path": "taucatch/action_h192_195536.py",
+      "sha256": "610871ae2f251d6b570c84d8ba752b3292ec84ce0951c20e14c4f0bb98bb464f",
+      "bytes": 1340
+    },
+    {
+      "path": "taucatch/action_h192_data_195536.py",
+      "sha256": "13e917b9e90c17bd143a8839e395d60ef5766c17c10d3722183f771d9bda77b5",
+      "bytes": 4992
+    },
+    {
+      "path": "taucatch/action_h96.py",
+      "sha256": "d8934b92cec6bca2c6c493d1ed0bcdc73244430a28fcb8131c8409303972a0a0",
+      "bytes": 1527
+    },
+    {
+      "path": "taucatch/action_horizon_data.py",
+      "sha256": "55939d188e82250836a9bd4ea8399553df21457aecd5538e2a235a48b0ac7df3",
+      "bytes": 7306
+    },
+    {
+      "path": "taucatch/action_link.py",
+      "sha256": "4fee1841354b5917795a5fb0e7ac962b17592e34c79d054a3cf1b8004f9af09d",
+      "bytes": 2143
+    },
+    {
+      "path": "taucatch/action_observation.py",
+      "sha256": "1b25e1104813808a0a3b342d9b839524323305c126e8eff4730a049b8efaca76",
+      "bytes": 2213
+    },
+    {
+      "path": "taucatch/action_policy.py",
+      "sha256": "b2cdd98e0696eba567a7a7be0af6244422175f9a4cfb65bfb7a4c53f11283363",
+      "bytes": 6652
+    },
+    {
+      "path": "taucatch/action_recovery_training_v1.py",
+      "sha256": "c3779dc696bc744f31c4d72575f6c09a7fe4e45b636ea3eb40b1db6a8600ed4e",
+      "bytes": 4410
+    },
+    {
+      "path": "taucatch/action_rl_v1.py",
+      "sha256": "3e142b9332e18c8e455b8d4eecd09a67ecbee397857abe104402e048711ca657",
+      "bytes": 3525
+    },
+    {
+      "path": "taucatch/action_sampling.py",
+      "sha256": "9826c89ba141e78d55a6a183a49b4cd0be8d803f501e6513000bdc42b6e4c73c",
+      "bytes": 2371
+    },
+    {
+      "path": "taucatch/arm.py",
+      "sha256": "26e0b750b0ff249b756344e22b1da1f888708c6dadc8b706439df9c36032fc0e",
+      "bytes": 5121
+    },
+    {
+      "path": "taucatch/ball.py",
+      "sha256": "29c70002390ebd267b0163deeafbc4ace6a527d5220a0f6cc4f797698482cf2e",
+      "bytes": 2607
+    },
+    {
+      "path": "taucatch/catcher.py",
+      "sha256": "a35fb012d0a3ed25669ff805427a5010b586a398a37e80ab9f922cd6ce8b4926",
+      "bytes": 8823
+    },
+    {
+      "path": "taucatch/choice.py",
+      "sha256": "9b1c28b495ad5b1df0ac7590a6b48d2563ddecb4ee61c9c16ae8104b9332d2f1",
+      "bytes": 8977
+    },
+    {
+      "path": "taucatch/choice_zoom.py",
+      "sha256": "d15ffa83339388cb0d3bdfbaa02b67fda74f338dece13a0598f6fa333335c445",
+      "bytes": 1715
+    },
+    {
+      "path": "taucatch/chooser.py",
+      "sha256": "5ea5b9a11b5ce19dc802a909c2e3e49d7d57f66f61b2ce74a63bc0e93af5335a",
+      "bytes": 5347
+    },
+    {
+      "path": "taucatch/compute.py",
+      "sha256": "4254628974672278675e0a8b5e0843bbc6a041671f87e6fa386e6f7a3ffd307f",
+      "bytes": 354
+    },
+    {
+      "path": "taucatch/differential_servo_v72.py",
+      "sha256": "b17d97c361c3ce07fd98a595eb06ca855a17979b6fae02adeb287f4ae59c867c",
+      "bytes": 4909
+    },
+    {
+      "path": "taucatch/ekf.py",
+      "sha256": "6bacb20c2f7fe3c808719ab9bf01b977f9f42dc99740c43efea9a002991c5ea7",
+      "bytes": 6242
+    },
+    {
+      "path": "taucatch/events.py",
+      "sha256": "637119198f07fb03078dfbd50962f6c7b12c45fb8a277f62326b3e66ba8aeba4",
+      "bytes": 13817
+    },
+    {
+      "path": "taucatch/finder.py",
+      "sha256": "961f3236c87e76d97888a0271adf5c6ceeaac2b17f8862d79f48eadb60b13b6c",
+      "bytes": 5747
+    },
+    {
+      "path": "taucatch/finder_fused_v230.py",
+      "sha256": "a2528599f172c85bcaea3922516db0a8262620310cb1f7a7db7675564bf9d353",
+      "bytes": 3233
+    },
+    {
+      "path": "taucatch/finder_graph_v16.py",
+      "sha256": "8f7fc41cd9d246ae8d090fbe59c28b0d28f106175f895bd725499ecd9d177ef9",
+      "bytes": 1110
+    },
+    {
+      "path": "taucatch/fused_event_tracker_v231.py",
+      "sha256": "9afea354c086135f1e824329cee1f0975443d50bcd37716945faf0c0a7e8e107",
+      "bytes": 7340
+    },
+    {
+      "path": "taucatch/fused_observation_v232.py",
+      "sha256": "f3af2791822ac2bad15fe7df02624c68f146802cb1971e8acf56e13bc94b5687",
+      "bytes": 2015
+    },
+    {
+      "path": "taucatch/multiscale_body_feedback_v12.py",
+      "sha256": "d317018735e87936a10c45022089b298a3ea3581590d03d3a874ea844ed77b93",
+      "bytes": 4599
+    },
+    {
+      "path": "taucatch/multiscale_bootstrap_v10.py",
+      "sha256": "8948148bb3a81886290d2f654e4a652889cd649f514b8fbc0278c5f8fe6e613c",
+      "bytes": 2828
+    },
+    {
+      "path": "taucatch/multiscale_bootstrap_v9.py",
+      "sha256": "b295cf7222d6aba9d0c2a7ee54d5144f4eb64a650e7e18080a6a21510183f9d6",
+      "bytes": 1876
+    },
+    {
+      "path": "taucatch/multiscale_catcher_v1.py",
+      "sha256": "000377d53f6c25f12eefa745bd86f72280f38165be92bcbf50aa7f2373759993",
+      "bytes": 403
+    },
+    {
+      "path": "taucatch/multiscale_event_tracker_v2.py",
+      "sha256": "4970bb6460749df0adccf489f7cec4e61fe261ba28051cd5af78a243850f1b1b",
+      "bytes": 3415
+    },
+    {
+      "path": "taucatch/multiscale_event_tracker_v4.py",
+      "sha256": "d29c99cf1a1172de4bd9caa41e30b0854e512b87345875005d56acb959b6c32e",
+      "bytes": 1828
+    },
+    {
+      "path": "taucatch/multiscale_graph_observation_v16.py",
+      "sha256": "9403c482a9d298cba3f6735df1bca3f948c83a84d8a3a5c618556ecb1561db04",
+      "bytes": 2126
+    },
+    {
+      "path": "taucatch/multiscale_graph_tracker_v16.py",
+      "sha256": "10ae1c201ac97ace39a9ee05846642bd958ff6bacaf6d3cc18dbd49fc3c25d3d",
+      "bytes": 5952
+    },
+    {
+      "path": "taucatch/multiscale_grip_timer_v14.py",
+      "sha256": "021c98bf88a96fbe92f3c1c06abeb08242ee693acba676386d299836ab7d54d0",
+      "bytes": 2452
+    },
+    {
+      "path": "taucatch/multiscale_observation_v1.py",
+      "sha256": "5491b2c750d2b96f91d6ac8ae4a0240c5811dd9b27bec15b8ffbba8a07bf9a3e",
+      "bytes": 2349
+    },
+    {
+      "path": "taucatch/multiscale_observation_v4.py",
+      "sha256": "c536bdb4e47c9f05b47728d494215a4e0d0d82fe21a0f2cc39dcfd7bc59ee4f1",
+      "bytes": 2434
+    },
+    {
+      "path": "taucatch/multiscale_observation_v5.py",
+      "sha256": "ed994ab3e248d179dff80afa9dec5dbcd703f2342e00de1021a580198a167da2",
+      "bytes": 546
+    },
+    {
+      "path": "taucatch/multiscale_observation_v6.py",
+      "sha256": "a8c0dfacffdd24653846f30e2aa122c7455d82e45826358bcb4b5c5f3e29f96b",
+      "bytes": 610
+    },
+    {
+      "path": "taucatch/multiscale_plane_controller_v13.py",
+      "sha256": "0b51a7216e4b698a44386b005ec6870336d7c30066dffe58a11430ecb55f615d",
+      "bytes": 8755
+    },
+    {
+      "path": "taucatch/multiscale_plane_geometry_v13.py",
+      "sha256": "f291111f94e0ecc2e2e4fa8508215cc4dc4450537bec835b93ff8becff87edc7",
+      "bytes": 1401
+    },
+    {
+      "path": "taucatch/multiscale_v1.py",
+      "sha256": "b592b388ebc31fb390105fa969b17084342f9aac3442d6cf5bc71585e884cb02",
+      "bytes": 11677
+    },
+    {
+      "path": "taucatch/multiscale_v9.py",
+      "sha256": "a865410c367d247c70d52de9e4681db13496891bad60f2ca35f029fbf8def4d0",
+      "bytes": 12494
+    },
+    {
+      "path": "taucatch/native_close_timing_execution_v44.py",
+      "sha256": "86d41c66c365fa8308f5444160d7ff151ae9e08a30129e890409dc09de158219",
+      "bytes": 1946
+    },
+    {
+      "path": "taucatch/native_close_timing_v44.py",
+      "sha256": "a5931eca2cc154c959e8dbfd54637cf1d8df50f87ad0e4f6b4549ada623210f8",
+      "bytes": 7531
+    },
+    {
+      "path": "taucatch/native_frozen_condition_v108.py",
+      "sha256": "81f10e659751171abd7d300a82353c588db1bdd62b6a00803b5f6a8ddbe0f59b",
+      "bytes": 2628
+    },
+    {
+      "path": "taucatch/native_residual_execution_v27.py",
+      "sha256": "b5c348217592694967ce04668942df50d4610df65318275006b5ff799e574cea",
+      "bytes": 4006
+    },
+    {
+      "path": "taucatch/native_residual_v26.py",
+      "sha256": "b222327015f29bff289a643e4ed336127c6c3ba73340aca6c573acd6cb6807fe",
+      "bytes": 6830
+    },
+    {
+      "path": "taucatch/native_scene_condition_v115.py",
+      "sha256": "1ea1a048675e581261407207e3889dfeb7dd1272ad9e04b943ceaf3cc2088b18",
+      "bytes": 2797
+    },
+    {
+      "path": "taucatch/native_servo_rich_v109.py",
+      "sha256": "7a71b6bba55f774d04a39bb00dae5be2c1b7b30e0db0129bcdc44f18db51bf35",
+      "bytes": 1789
+    },
+    {
+      "path": "taucatch/native_servo_space_v90.py",
+      "sha256": "5c8c2d4e2029aa3988f0d289430980dfcf448a35f3b20d016fd5d44c83d64429",
+      "bytes": 1669
+    },
+    {
+      "path": "taucatch/predictor.py",
+      "sha256": "48f71e21c7f6646c9fd34baeb6030df6d464b592b30efe0062e9b8ddf2ae2230",
+      "bytes": 7474
+    },
+    {
+      "path": "taucatch/rgb.py",
+      "sha256": "fc63395675127a7df306bbbb67237f2d804af6d83d0e9f974f0c00cfb3b99c8b",
+      "bytes": 2541
+    },
+    {
+      "path": "taucatch/scene.py",
+      "sha256": "e08581632805219a47c633f9e92dabd680c02192c660d083ae67fe5bd225a689",
+      "bytes": 11641
+    },
+    {
+      "path": "taucatch/servo_native_data_v88.py",
+      "sha256": "425c061f3d8d5c061db845eddf969b19ee8cf3a890e76a3d9783d76b99194bcb",
+      "bytes": 5294
+    },
+    {
+      "path": "taucatch/servo_native_rich_data_v107.py",
+      "sha256": "d1201b43e0d8eef3186cbc4a76318976f57da754b5b9f0457ee23aff35189cfb",
+      "bytes": 4344
+    },
+    {
+      "path": "taucatch/sim.py",
+      "sha256": "553bc3f3490d16f3f2ff1e4fec16b1de2bafb58b51c1339e5f43c5f1db5f6778",
+      "bytes": 7755
+    },
+    {
+      "path": "taucatch/single_ball_curriculum_v165.py",
+      "sha256": "237c5e5ade614ec2583f81ddc825ca0100d13d280a52ae51484f95499e899a4c",
+      "bytes": 1237
+    },
+    {
+      "path": "taucatch/single_ball_v1.py",
+      "sha256": "2f1c104a5901b7628f2db00b874ca4d67b8e33eb6d17750b29cb04becd9ddfbe",
+      "bytes": 1073
+    },
+    {
+      "path": "taucatch/throws.py",
+      "sha256": "839e6a865f1a742d47ed3b713ff8eb6b565dd8875ac22b5bb1fab8e31e6f1544",
+      "bytes": 7300
+    },
+    {
+      "path": "taucatch/tracker.py",
+      "sha256": "a827ae948dd35b4b568caf515c20ea82e315d4d045dc4e8fae582e13103eac20",
+      "bytes": 7126
+    },
+    {
+      "path": "taucatch/vla_link.py",
+      "sha256": "96c367c654ff293278f7ac8c8e7fa119fc4bc916a02242e1de2962835f47187d",
+      "bytes": 3086
+    },
+    {
+      "path": "taucatch/volley.py",
+      "sha256": "23361f7d07ac4d0aa02f1744c5699fc07e8afe46269243b198bdbdbb9042987c",
+      "bytes": 10422
+    },
+    {
+      "path": "taucatch/volley_tracker.py",
+      "sha256": "dd048e1be1b4355f99ea8f223d7fe604ddb41528529dee58ef982151e0f0d5f6",
+      "bytes": 11248
+    },
+    {
+      "path": "taucatch/xyz_candidate_rpc_v163.py",
+      "sha256": "d4a57c85bcbd0eacfc6348a375a237213c3fa4bcaeb70f506a87bec88315ba3d",
+      "bytes": 4728
+    },
+    {
+      "path": "taucatch/xyz_coarse_contract_v308.py",
+      "sha256": "092b76861a6d95a6076074aae809cc3d7a6f6c2fd2eb537730a4733c329e59ba",
+      "bytes": 352
+    },
+    {
+      "path": "taucatch/xyz_coarse_execution_v309.py",
+      "sha256": "a5da78495dbaf7b81f9a0e62f01394ce0b799a6b4257f76742e0011f09cbf533",
+      "bytes": 2456
+    },
+    {
+      "path": "taucatch/xyz_coarse_policy_v310.py",
+      "sha256": "c75f903201cb583257850e15ffa67df2153f00f6d7fe9b067922a38c17b107b4",
+      "bytes": 2410
+    },
+    {
+      "path": "taucatch/xyz_coarse_rpc_v311.py",
+      "sha256": "2de00c5439496a655148ef9db909b06bcbe50bdbb7ab0bc9901b96e3cad36ab8",
+      "bytes": 5214
+    },
+    {
+      "path": "taucatch/xyz_context_softsign_v273.py",
+      "sha256": "f26be1d454590ffa82ec7abbc5718db3592508e1efda3ce9338efa7661971de3",
+      "bytes": 2561
+    },
+    {
+      "path": "taucatch/xyz_context_v134.py",
+      "sha256": "100323d18788d7a4c5fc3b466796a3f74b3a4b89ecaf658d80597b9272ef3660",
+      "bytes": 2052
+    },
+    {
+      "path": "taucatch/xyz_execution_v134.py",
+      "sha256": "7d138b279f8a4d4550bee445d0a487efc8575bb7fd326e6bd080419b47b46b32",
+      "bytes": 2540
+    },
+    {
+      "path": "taucatch/xyz_fast_observation_v176.py",
+      "sha256": "b15f7093d2b957122dbfe5e294de2a9611fb9629869ed71f40b7d253c5c0b2ad",
+      "bytes": 692
+    },
+    {
+      "path": "taucatch/xyz_fusion_policy_v596.py",
+      "sha256": "8b38b3ec279df8a31d8ed9276eb64ab2c4814ca263b45202be377346d21e0ba4",
+      "bytes": 1934
+    },
+    {
+      "path": "taucatch/xyz_fusion_rpc_v602.py",
+      "sha256": "f781dbc55b031ccaf192ec6f11abffcd407e6c97c419b444a7c39312a184a172",
+      "bytes": 5710
+    },
+    {
+      "path": "taucatch/xyz_fusion_runtime_v601.py",
+      "sha256": "8095b0686afa785a21aa72faab3f26030d80feb7fd5c2cc22abbc7faa8605e16",
+      "bytes": 5216
+    },
+    {
+      "path": "taucatch/xyz_learning_v158.py",
+      "sha256": "e5b5cb69581b58e38650bb951568a00600c7f8454401c85fabf093bbc3308813",
+      "bytes": 1621
+    },
+    {
+      "path": "taucatch/xyz_observed_support_v700.py",
+      "sha256": "79a3148aa13d9134b92dc29e3d298a156f9dfa518bc8dcffbbe62a7cf9563ecc",
+      "bytes": 1559
+    },
+    {
+      "path": "taucatch/xyz_policy_v139.py",
+      "sha256": "08b488aec1a68424ab88a650f0ef290efa0179cce1f326f6326a3f64e9ebb0d7",
+      "bytes": 4811
+    },
+    {
+      "path": "taucatch/xyz_prethrow_observation_v202.py",
+      "sha256": "bcf8ed87ab0fb7872d4e8782eb340c9c28b2b3b531495cf1fc39a81420582a79",
+      "bytes": 1821
+    },
+    {
+      "path": "taucatch/xyz_prethrow_runtime_v199.py",
+      "sha256": "d48e096f51519d95d7a480f270858f2ffe3e2d5c71a8aa795bf71fbc27c89f9c",
+      "bytes": 950
+    },
+    {
+      "path": "taucatch/xyz_prethrow_strict_v214.py",
+      "sha256": "2ff7495f7380d970d3c7f1f207c8aad55d42774d6ec9effb27492b7b92c9d84c",
+      "bytes": 598
+    },
+    {
+      "path": "taucatch/xyz_prethrow_v198.py",
+      "sha256": "ab0409aac18109f2effb630cf306950e733de87e8f5dd11513e260fd71f1be95",
+      "bytes": 1698
+    },
+    {
+      "path": "taucatch/xyz_prethrow_warm_v221.py",
+      "sha256": "9fd94665ecc6d17814329a39961a68a93418acbc12656630593c6e5160c024f3",
+      "bytes": 3002
+    },
+    {
+      "path": "taucatch/xyz_raw_gradient_v404.py",
+      "sha256": "3ebd3c79bfbcead3b4f6d0f1c4ef7f8717e0060fb9483243c169b7203dd6283f",
+      "bytes": 3337
+    },
+    {
+      "path": "taucatch/xyz_raw_runtime_v414.py",
+      "sha256": "abe0df85a1bf2ae41dc4849394ebb984577674ce4f8fe0c2ee949b06ed7c1c26",
+      "bytes": 3947
+    },
+    {
+      "path": "taucatch/xyz_runtime_v158.py",
+      "sha256": "e72ebabca28b13358a91703bb2c720471a040c293ccf23f1ff29f1eabc7dc713",
+      "bytes": 2532
+    },
+    {
+      "path": "taucatch/xyz_teacher_objective_v325.py",
+      "sha256": "960e53f85a02f97ec2990acabc791196ef5c89f92b244b0ddbb2cee56e0e7086",
+      "bytes": 745
+    },
+    {
+      "path": "taucatch/xyz_timescale_runtime_v173.py",
+      "sha256": "2c3bfe4c54e791c3cc62acca4737d199e02ad0be6e3d411afbb90b3672797f17",
+      "bytes": 5580
+    },
+    {
+      "path": "tests/test_action_chunk.py",
+      "sha256": "cf8a9bf1f7417651d80e0e9b090e7562e0768d76ec3e02fec4fee6b323a2ecb4",
+      "bytes": 6919
+    },
+    {
+      "path": "tests/test_action_h192_195536.py",
+      "sha256": "7a7a2cf6a354707714d1cd428b9784a7e98a628124b37063000d45a171f162a2",
+      "bytes": 1763
+    },
+    {
+      "path": "tools/handoff.py",
+      "sha256": "2bb17dae443d1940df72430f3ed151061668b2a497e51c5f6b4a0d3f4f0f42a1",
+      "bytes": 6628
+    },
+    {
+      "path": "tools/plot_leader_brief.py",
+      "sha256": "6cbfdb456ee099384b91cf6c3c891214c73fba5d07e453d053806accae8f205d",
+      "bytes": 9208
+    },
+    {
+      "path": "tools/plot_results.py",
+      "sha256": "2f99d5cd2c8b1325887fe5e003d251903f2fa9f1d9053f87bff125bf612b9242",
+      "bytes": 2941
+    },
+    {
+      "path": "tools/render_saved_trajectory.py",
+      "sha256": "27c32d99c2b5f9de31f1051d6a664e5275de5dc55c4e7e57d59c8efa849c030d",
+      "bytes": 1982
+    },
+    {
+      "path": "tools/restore_archive.py",
+      "sha256": "28030d0e500818440200ded3890edd1ea994b1bc628215dd63b7be7406400ec1",
+      "bytes": 2104
+    }
+  ]
+}

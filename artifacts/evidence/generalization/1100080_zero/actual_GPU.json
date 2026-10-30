@@ -1,0 +1,44 @@
+{
+  "accepted": true,
+  "n": 5,
+  "rows": [
+    {
+      "id": 0,
+      "op": "condition",
+      "episode": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero",
+      "exact": true
+    },
+    {
+      "id": 1,
+      "op": "fast",
+      "episode": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero",
+      "exact": true
+    },
+    {
+      "id": 2,
+      "op": "fast",
+      "episode": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero",
+      "exact": true
+    },
+    {
+      "id": 3,
+      "op": "fast",
+      "episode": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero",
+      "exact": true
+    },
+    {
+      "id": 4,
+      "op": "fast",
+      "episode": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero",
+      "exact": true
+    }
+  ],
+  "actual_prerelease_condition_and_full_native_flight_exact": true,
+  "sampling_allowed": false,
+  "old_behavior_probability_reuse": false,
+  "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "condition_only_has_no_actions_or_flight_inputs": true,
+  "physical_replays": 0,
+  "optimizer_steps": 0,
+  "VLA_gain_proven": false
+}

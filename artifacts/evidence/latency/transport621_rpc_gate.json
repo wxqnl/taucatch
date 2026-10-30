@@ -1,0 +1,652 @@
+{
+  "accepted": true,
+  "actual_RPC_calls": 4,
+  "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "condition_RPC_ms": 201.480748,
+  "text_RPC_ms": 24.628303,
+  "fast_median_RPC_ms": 11.240819,
+  "fast_p95_RPC_ms": 11.4378668,
+  "fast_max_RPC_ms": 11.459761,
+  "latency_sample_size": 3,
+  "provisional_latency_accepted": true,
+  "physical_trials": 0,
+  "optimizer_steps": 0,
+  "rows": [
+    {
+      "observed_t": 0.057,
+      "anchor_observed_t": -26516.253046276,
+      "anchor_rgb_t": -26516.274803289,
+      "condition_available_t": -7.803e-06,
+      "condition_record_id": 0,
+      "actions": [
+        [
+          0.008386017754673958,
+          -0.12451609969139099,
+          0.07994724065065384
+        ],
+        [
+          0.004455345217138529,
+          -0.03203767165541649,
+          -0.00973077304661274
+        ],
+        [
+          -0.005656066350638866,
+          -0.053337354212999344,
+          -0.04613303393125534
+        ],
+        [
+          -0.010142250917851925,
+          -0.05054892227053642,
+          -0.04989378899335861
+        ],
+        [
+          0.005307868588715792,
+          -0.02677784487605095,
+          -0.025653019547462463
+        ],
+        [
+          -0.0026948275044560432,
+          0.04802051559090614,
+          -0.08385998755693436
+        ],
+        [
+          0.0005189738585613668,
+          -0.009135079570114613,
+          -0.0518140085041523
+        ],
+        [
+          -0.0050083789974451065,
+          0.0019495397573336959,
+          -0.031084146350622177
+        ],
+        [
+          0.003525181906297803,
+          -0.028945688158273697,
+          -0.004925337620079517
+        ],
+        [
+          0.009085683152079582,
+          0.0435880571603775,
+          -0.002684210427105427
+        ],
+        [
+          0.007272280286997557,
+          -0.0012634575832635164,
+          0.025405829772353172
+        ],
+        [
+          0.0017366932006552815,
+          0.09541162848472595,
+          0.013793372549116611
+        ]
+      ],
+      "mean": [
+        [
+          0.008386017754673958,
+          -0.12451609969139099,
+          0.07994724065065384
+        ],
+        [
+          0.004455345217138529,
+          -0.03203767165541649,
+          -0.00973077304661274
+        ],
+        [
+          -0.005656066350638866,
+          -0.053337354212999344,
+          -0.04613303393125534
+        ],
+        [
+          -0.010142250917851925,
+          -0.05054892227053642,
+          -0.04989378899335861
+        ],
+        [
+          0.005307868588715792,
+          -0.02677784487605095,
+          -0.025653019547462463
+        ],
+        [
+          -0.0026948275044560432,
+          0.04802051559090614,
+          -0.08385998755693436
+        ],
+        [
+          0.0005189738585613668,
+          -0.009135079570114613,
+          -0.0518140085041523
+        ],
+        [
+          -0.0050083789974451065,
+          0.0019495397573336959,
+          -0.031084146350622177
+        ],
+        [
+          0.003525181906297803,
+          -0.028945688158273697,
+          -0.004925337620079517
+        ],
+        [
+          0.009085683152079582,
+          0.0435880571603775,
+          -0.002684210427105427
+        ],
+        [
+          0.007272280286997557,
+          -0.0012634575832635164,
+          0.025405829772353172
+        ],
+        [
+          0.0017366932006552815,
+          0.09541162848472595,
+          0.013793372549116611
+        ]
+      ],
+      "value": 0.0,
+      "latent": null,
+      "log_prob": null,
+      "behavior_index": null,
+      "absolute_output_executed": false,
+      "id": 1,
+      "op": "fast",
+      "episode": "new_fusion_SFT_transport_v602",
+      "mode": "mean",
+      "input_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00001.npz",
+      "input_record_sha256": "3f6dd6a89754d00e6d3169fa4a28aae38b984dd5011ad10fab5963930ca74222",
+      "feature_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00001.pt",
+      "feature_record_sha256": "fea935f4b8eb7a4be0b26f4544f5c34e708145e9f9b187596561000c507c748e",
+      "server_ms": 10.128203,
+      "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+      "kind": "native_xyz_raw_fusion_SFT_v596",
+      "behavior_contract": "raw_native_fusion_SFT_mean_zero_v602",
+      "behavior_namespace": "fusion_SFT_policy3_no_probability_reuse",
+      "base_checkpoint_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "artifact_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "base_initialization_sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f",
+      "actor_initialization_sha256": "02bd3084a105ee2a4dd11205a04ae2e89e03a486adf8b70bfea76d872a97272a",
+      "xyz_contract": {
+        "name": "coarse_fast_relative_xyz_only_6cm_rate08_v308",
+        "horizon": 12,
+        "dt": 0.016,
+        "action_dim": 3,
+        "translation_m": 0.06,
+        "translation_rate_mps": 0.8,
+        "normal": "fast_unchanged",
+        "closure": "fast_timer_unchanged",
+        "expiry": "observation_plus_192ms_then_slew_to_zero"
+      },
+      "context_contract": "delivered_fast7_softsign_qvel7_palmvel3_error3_age_valid_v273",
+      "policy_version": 3,
+      "raw_RL_steps": 1,
+      "parent_raw_joint_sha256": "e486bad3c37dbb5ff33010125e0871850eee4c39f44f5f08b7d5cb0843a089e7",
+      "optimization_steps": 144,
+      "supervised_recovery_steps": 144,
+      "selected_joint_gradient_steps": 16,
+      "attempted_joint_gradient_steps": 32,
+      "source_coarse_joint_steps": 8,
+      "sampling_allowed": false,
+      "old_behavior_probability_reuse": false,
+      "fusion_spec": {
+        "name": "native_feature_context_nonlinear_residual_v596",
+        "native_dim": 256,
+        "context_dim": 22,
+        "hidden_dim": 128,
+        "activation": "SiLU",
+        "feature_pool": "mean_spike_time_per_horizon",
+        "initial_output": "exact_zero",
+        "base_XYZ_readout_and_context_frozen": true
+      },
+      "output_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00001.json",
+      "output_record_sha256": "5463e5ba65dc52b668715bb1f02492acae99f7395940ce1fd797b0f7b7197e46",
+      "roundtrip_ms": 11.459761,
+      "client_started_ns": 18181957553565617,
+      "client_complete_ns": 18181957565025378
+    },
+    {
+      "observed_t": 0.091,
+      "anchor_observed_t": -26516.253046276,
+      "anchor_rgb_t": -26516.274803289,
+      "condition_available_t": -7.803e-06,
+      "condition_record_id": 0,
+      "actions": [
+        [
+          -0.006002588663250208,
+          -0.004352193791419268,
+          -0.09149440377950668
+        ],
+        [
+          -0.034551430493593216,
+          0.11466842889785767,
+          -0.1037834957242012
+        ],
+        [
+          -0.02984352968633175,
+          0.1258852481842041,
+          -0.08795412629842758
+        ],
+        [
+          -0.043142169713974,
+          0.14754945039749146,
+          -0.06771322339773178
+        ],
+        [
+          -0.04265812411904335,
+          0.09106647968292236,
+          -0.054275255650281906
+        ],
+        [
+          -0.03756850212812424,
+          0.10548968613147736,
+          -0.03149005025625229
+        ],
+        [
+          -0.04065840318799019,
+          0.05668589100241661,
+          -0.0364375039935112
+        ],
+        [
+          -0.02652691677212715,
+          0.10638169199228287,
+          -0.03087450936436653
+        ],
+        [
+          -0.03189196437597275,
+          0.1100158765912056,
+          -0.010584704577922821
+        ],
+        [
+          -0.02372991293668747,
+          0.11178899556398392,
+          -0.019842829555273056
+        ],
+        [
+          -0.03180714324116707,
+          0.1110890805721283,
+          -0.006831919774413109
+        ],
+        [
+          -0.019984634593129158,
+          0.13080498576164246,
+          -0.007680958136916161
+        ]
+      ],
+      "mean": [
+        [
+          -0.006002588663250208,
+          -0.004352193791419268,
+          -0.09149440377950668
+        ],
+        [
+          -0.034551430493593216,
+          0.11466842889785767,
+          -0.1037834957242012
+        ],
+        [
+          -0.02984352968633175,
+          0.1258852481842041,
+          -0.08795412629842758
+        ],
+        [
+          -0.043142169713974,
+          0.14754945039749146,
+          -0.06771322339773178
+        ],
+        [
+          -0.04265812411904335,
+          0.09106647968292236,
+          -0.054275255650281906
+        ],
+        [
+          -0.03756850212812424,
+          0.10548968613147736,
+          -0.03149005025625229
+        ],
+        [
+          -0.04065840318799019,
+          0.05668589100241661,
+          -0.0364375039935112
+        ],
+        [
+          -0.02652691677212715,
+          0.10638169199228287,
+          -0.03087450936436653
+        ],
+        [
+          -0.03189196437597275,
+          0.1100158765912056,
+          -0.010584704577922821
+        ],
+        [
+          -0.02372991293668747,
+          0.11178899556398392,
+          -0.019842829555273056
+        ],
+        [
+          -0.03180714324116707,
+          0.1110890805721283,
+          -0.006831919774413109
+        ],
+        [
+          -0.019984634593129158,
+          0.13080498576164246,
+          -0.007680958136916161
+        ]
+      ],
+      "value": 0.0,
+      "latent": null,
+      "log_prob": null,
+      "behavior_index": null,
+      "absolute_output_executed": false,
+      "id": 2,
+      "op": "fast",
+      "episode": "new_fusion_SFT_transport_v602",
+      "mode": "mean",
+      "input_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00002.npz",
+      "input_record_sha256": "04635d8f2fdec9e39a780e6e1ab914cd749fb9b741e51e12e51eaa2639279cd5",
+      "feature_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00002.pt",
+      "feature_record_sha256": "8218264ef2e89768d3a5f351c0c4b892de398f2bddf87ecb3466b4ea6f23d32b",
+      "server_ms": 9.739166,
+      "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+      "kind": "native_xyz_raw_fusion_SFT_v596",
+      "behavior_contract": "raw_native_fusion_SFT_mean_zero_v602",
+      "behavior_namespace": "fusion_SFT_policy3_no_probability_reuse",
+      "base_checkpoint_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "artifact_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "base_initialization_sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f",
+      "actor_initialization_sha256": "02bd3084a105ee2a4dd11205a04ae2e89e03a486adf8b70bfea76d872a97272a",
+      "xyz_contract": {
+        "name": "coarse_fast_relative_xyz_only_6cm_rate08_v308",
+        "horizon": 12,
+        "dt": 0.016,
+        "action_dim": 3,
+        "translation_m": 0.06,
+        "translation_rate_mps": 0.8,
+        "normal": "fast_unchanged",
+        "closure": "fast_timer_unchanged",
+        "expiry": "observation_plus_192ms_then_slew_to_zero"
+      },
+      "context_contract": "delivered_fast7_softsign_qvel7_palmvel3_error3_age_valid_v273",
+      "policy_version": 3,
+      "raw_RL_steps": 1,
+      "parent_raw_joint_sha256": "e486bad3c37dbb5ff33010125e0871850eee4c39f44f5f08b7d5cb0843a089e7",
+      "optimization_steps": 144,
+      "supervised_recovery_steps": 144,
+      "selected_joint_gradient_steps": 16,
+      "attempted_joint_gradient_steps": 32,
+      "source_coarse_joint_steps": 8,
+      "sampling_allowed": false,
+      "old_behavior_probability_reuse": false,
+      "fusion_spec": {
+        "name": "native_feature_context_nonlinear_residual_v596",
+        "native_dim": 256,
+        "context_dim": 22,
+        "hidden_dim": 128,
+        "activation": "SiLU",
+        "feature_pool": "mean_spike_time_per_horizon",
+        "initial_output": "exact_zero",
+        "base_XYZ_readout_and_context_frozen": true
+      },
+      "output_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00002.json",
+      "output_record_sha256": "8dea0d64a4523d57af77fca770cb37bdba7ce9ea20a684423413585be5f85242",
+      "roundtrip_ms": 11.240819,
+      "client_started_ns": 18181957566593812,
+      "client_complete_ns": 18181957577834631
+    },
+    {
+      "observed_t": 0.13,
+      "anchor_observed_t": -26516.253046276,
+      "anchor_rgb_t": -26516.274803289,
+      "condition_available_t": -7.803e-06,
+      "condition_record_id": 0,
+      "actions": [
+        [
+          -0.017578188329935074,
+          0.3058118522167206,
+          -0.21200749278068542
+        ],
+        [
+          -0.01954943686723709,
+          0.2806572914123535,
+          -0.13645707070827484
+        ],
+        [
+          -0.018873093649744987,
+          0.27492421865463257,
+          -0.10714437812566757
+        ],
+        [
+          -0.019587794318795204,
+          0.2922208607196808,
+          -0.10072828829288483
+        ],
+        [
+          -0.02953469380736351,
+          0.2617706060409546,
+          -0.08681070804595947
+        ],
+        [
+          -0.025186236947774887,
+          0.26800504326820374,
+          -0.07640821486711502
+        ],
+        [
+          -0.023359423503279686,
+          0.26837271451950073,
+          -0.08305750787258148
+        ],
+        [
+          -0.018291639164090157,
+          0.25219598412513733,
+          -0.06412510573863983
+        ],
+        [
+          -0.02127750962972641,
+          0.24631847441196442,
+          -0.054745424538850784
+        ],
+        [
+          -0.013356330804526806,
+          0.24891316890716553,
+          -0.046226777136325836
+        ],
+        [
+          -0.021877437829971313,
+          0.2383348047733307,
+          -0.028224138543009758
+        ],
+        [
+          -0.008394598960876465,
+          0.20389102399349213,
+          -0.014127141796052456
+        ]
+      ],
+      "mean": [
+        [
+          -0.017578188329935074,
+          0.3058118522167206,
+          -0.21200749278068542
+        ],
+        [
+          -0.01954943686723709,
+          0.2806572914123535,
+          -0.13645707070827484
+        ],
+        [
+          -0.018873093649744987,
+          0.27492421865463257,
+          -0.10714437812566757
+        ],
+        [
+          -0.019587794318795204,
+          0.2922208607196808,
+          -0.10072828829288483
+        ],
+        [
+          -0.02953469380736351,
+          0.2617706060409546,
+          -0.08681070804595947
+        ],
+        [
+          -0.025186236947774887,
+          0.26800504326820374,
+          -0.07640821486711502
+        ],
+        [
+          -0.023359423503279686,
+          0.26837271451950073,
+          -0.08305750787258148
+        ],
+        [
+          -0.018291639164090157,
+          0.25219598412513733,
+          -0.06412510573863983
+        ],
+        [
+          -0.02127750962972641,
+          0.24631847441196442,
+          -0.054745424538850784
+        ],
+        [
+          -0.013356330804526806,
+          0.24891316890716553,
+          -0.046226777136325836
+        ],
+        [
+          -0.021877437829971313,
+          0.2383348047733307,
+          -0.028224138543009758
+        ],
+        [
+          -0.008394598960876465,
+          0.20389102399349213,
+          -0.014127141796052456
+        ]
+      ],
+      "value": 0.0,
+      "latent": null,
+      "log_prob": null,
+      "behavior_index": null,
+      "absolute_output_executed": false,
+      "id": 3,
+      "op": "fast",
+      "episode": "new_fusion_SFT_transport_v602",
+      "mode": "mean",
+      "input_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00003.npz",
+      "input_record_sha256": "6da2bb75f836f6eaf5722ffdcda126e84c73c31a6958ef24fc8e94672bc87687",
+      "feature_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00003.pt",
+      "feature_record_sha256": "a106e4b60febdf49ba1a37b2e890695c91c5159ffd78794d1d7dd87e86f1f847",
+      "server_ms": 9.698269,
+      "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+      "kind": "native_xyz_raw_fusion_SFT_v596",
+      "behavior_contract": "raw_native_fusion_SFT_mean_zero_v602",
+      "behavior_namespace": "fusion_SFT_policy3_no_probability_reuse",
+      "base_checkpoint_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "artifact_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+      "base_initialization_sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f",
+      "actor_initialization_sha256": "02bd3084a105ee2a4dd11205a04ae2e89e03a486adf8b70bfea76d872a97272a",
+      "xyz_contract": {
+        "name": "coarse_fast_relative_xyz_only_6cm_rate08_v308",
+        "horizon": 12,
+        "dt": 0.016,
+        "action_dim": 3,
+        "translation_m": 0.06,
+        "translation_rate_mps": 0.8,
+        "normal": "fast_unchanged",
+        "closure": "fast_timer_unchanged",
+        "expiry": "observation_plus_192ms_then_slew_to_zero"
+      },
+      "context_contract": "delivered_fast7_softsign_qvel7_palmvel3_error3_age_valid_v273",
+      "policy_version": 3,
+      "raw_RL_steps": 1,
+      "parent_raw_joint_sha256": "e486bad3c37dbb5ff33010125e0871850eee4c39f44f5f08b7d5cb0843a089e7",
+      "optimization_steps": 144,
+      "supervised_recovery_steps": 144,
+      "selected_joint_gradient_steps": 16,
+      "attempted_joint_gradient_steps": 32,
+      "source_coarse_joint_steps": 8,
+      "sampling_allowed": false,
+      "old_behavior_probability_reuse": false,
+      "fusion_spec": {
+        "name": "native_feature_context_nonlinear_residual_v596",
+        "native_dim": 256,
+        "context_dim": 22,
+        "hidden_dim": 128,
+        "activation": "SiLU",
+        "feature_pool": "mean_spike_time_per_horizon",
+        "initial_output": "exact_zero",
+        "base_XYZ_readout_and_context_frozen": true
+      },
+      "output_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00003.json",
+      "output_record_sha256": "277dcc91da303e1cb7927b21b4f9f32b91a747c5186928bfc9bf781e7a622f71",
+      "roundtrip_ms": 11.202171,
+      "client_started_ns": 18181957579653673,
+      "client_complete_ns": 18181957590855844
+    }
+  ],
+  "preparation": {
+    "encoded_ns": 18181957549366585,
+    "capture_ns": 18155441277583352,
+    "observed_ns": 18155441299340365,
+    "condition_only": true,
+    "absolute_output_executed": false,
+    "id": 0,
+    "op": "condition",
+    "episode": "new_fusion_SFT_transport_v602",
+    "mode": "mean",
+    "input_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00000.npz",
+    "input_record_sha256": "b1765ca7ef757d7327b072d093de3fb3ae579c1a0756b0d9c164221168c2820d",
+    "feature_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00000.pt",
+    "feature_record_sha256": "71592e3f6a57997b87d15d3f7a36d7c7491e9138cc5eb62c3a036182ec5037d5",
+    "server_ms": 199.328794,
+    "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+    "kind": "native_xyz_raw_fusion_SFT_v596",
+    "behavior_contract": "raw_native_fusion_SFT_mean_zero_v602",
+    "behavior_namespace": "fusion_SFT_policy3_no_probability_reuse",
+    "base_checkpoint_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+    "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+    "artifact_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+    "base_initialization_sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f",
+    "actor_initialization_sha256": "02bd3084a105ee2a4dd11205a04ae2e89e03a486adf8b70bfea76d872a97272a",
+    "xyz_contract": {
+      "name": "coarse_fast_relative_xyz_only_6cm_rate08_v308",
+      "horizon": 12,
+      "dt": 0.016,
+      "action_dim": 3,
+      "translation_m": 0.06,
+      "translation_rate_mps": 0.8,
+      "normal": "fast_unchanged",
+      "closure": "fast_timer_unchanged",
+      "expiry": "observation_plus_192ms_then_slew_to_zero"
+    },
+    "context_contract": "delivered_fast7_softsign_qvel7_palmvel3_error3_age_valid_v273",
+    "policy_version": 3,
+    "raw_RL_steps": 1,
+    "parent_raw_joint_sha256": "e486bad3c37dbb5ff33010125e0871850eee4c39f44f5f08b7d5cb0843a089e7",
+    "optimization_steps": 144,
+    "supervised_recovery_steps": 144,
+    "selected_joint_gradient_steps": 16,
+    "attempted_joint_gradient_steps": 32,
+    "source_coarse_joint_steps": 8,
+    "sampling_allowed": false,
+    "old_behavior_probability_reuse": false,
+    "fusion_spec": {
+      "name": "native_feature_context_nonlinear_residual_v596",
+      "native_dim": 256,
+      "context_dim": 22,
+      "hidden_dim": 128,
+      "activation": "SiLU",
+      "feature_pool": "mean_spike_time_per_horizon",
+      "initial_output": "exact_zero",
+      "base_XYZ_readout_and_context_frozen": true
+    },
+    "output_record": "outputs/logs/xyz_fusion_hardnegative_transport_v621/tape/00000.json",
+    "output_record_sha256": "1c108ce30532b8f04347414bc3b19f936cfe7f16bf683a8c68750866f24ae3ba",
+    "roundtrip_ms": 201.480748,
+    "client_started_ns": 18181957350898090,
+    "client_complete_ns": 18181957552378838
+  },
+  "scope": "Genuine held-world RGB plus saved TRAIN DVS/state/context for transport only; no physical release or live-context quality proof"
+}

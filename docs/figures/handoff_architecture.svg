@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="440" viewBox="0 0 1080 440" role="img" aria-labelledby="title desc">
+<title id="title">DVS fast control and SpikeVLA action residual</title><desc id="desc">Stereo events feed a fast state estimator and planner. Prerelease RGB and text condition SpikeVLA; live events and robot state yield XYZ chunks fused with the fast target before servo execution.</desc>
+<defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8" fill="#48637b"/></marker></defs>
+<rect width="1080" height="440" rx="14" fill="#f5f8fc"/>
+<g font-family="Arial, sans-serif" fill="#16324b">
+<text x="30" y="35" font-size="22" font-weight="bold">SpikeVLA + DVS: multiscale catching</text>
+<g fill="#e2f3ef" stroke="#389783" stroke-width="2"><rect x="30" y="90" width="185" height="90" rx="10"/><rect x="265" y="90" width="235" height="90" rx="10"/><rect x="550" y="90" width="235" height="90" rx="10"/></g>
+<g font-size="18" text-anchor="middle"><text x="122" y="127">Stereo DVS</text><text x="122" y="153" font-size="14">live events</text><text x="382" y="127">Finder + stereo + EKF</text><text x="382" y="153" font-size="14">causal state / uncertainty</text><text x="667" y="120">Fast intercept + grip</text><text x="667" y="146" font-size="14">4 ms planning / local servo</text><text x="667" y="166" font-size="14">orientation + closure authority</text></g>
+<g fill="#e9e8ff" stroke="#7c71b8" stroke-width="2"><rect x="30" y="270" width="185" height="95" rx="10"/><rect x="265" y="270" width="235" height="95" rx="10"/><rect x="550" y="270" width="235" height="95" rx="10"/></g>
+<g font-size="18" text-anchor="middle"><text x="122" y="303">RGB + instruction</text><text x="122" y="330" font-size="14">encode before release</text><text x="382" y="301">SpikeVLA + DVS tokens</text><text x="382" y="327" font-size="14">native motion decoder</text><text x="382" y="348" font-size="14">live proprioception + context</text><text x="667" y="301">Fusion head</text><text x="667" y="327" font-size="14">12 x 3 XYZ residual chunk</text><text x="667" y="348" font-size="14">16 ms knots / 192 ms lifetime</text></g>
+<rect x="840" y="157" width="205" height="125" rx="10" fill="#fff0d5" stroke="#c6953c" stroke-width="2"/>
+<g text-anchor="middle"><text x="942" y="191" font-size="18">Timed action fusion</text><text x="942" y="218" font-size="14">6 cm / 0.8 m/s bounds</text><text x="942" y="241" font-size="14">expiry + local IK</text><text x="942" y="264" font-size="16">1 ms servo → robot</text></g>
+<g fill="none" stroke="#48637b" stroke-width="2" marker-end="url(#arrow)"><path d="M215 135 H265"/><path d="M500 135 H550"/><path d="M215 315 H265"/><path d="M500 315 H550"/><path d="M785 135 H815 V183 H840"/><path d="M785 315 H815 V255 H840"/><path d="M122 180 V224 H330 V270"/><path d="M667 180 V224 H445 V270"/></g>
+<text x="30" y="408" font-size="14" fill="#536a7d">Simulation prototype. XYZ corrections are learned; fast control retains orientation and grasp timing.</text>
+</g></svg>

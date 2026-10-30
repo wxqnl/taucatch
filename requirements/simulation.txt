@@ -1,0 +1,8 @@
+# Core simulation dependencies; tested versions are recorded in artifacts/environment.json.
+numpy>=1.26,<3
+scipy>=1.13,<2
+mujoco==3.16.0
+ruckig==0.19.4
+numba>=0.61,<1
+Pillow>=10,<14
+torch>=2.6,<3

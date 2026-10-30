@@ -1,0 +1,93 @@
+{
+  "complete": true,
+  "seed": 1100060,
+  "mode": "zero",
+  "outcome": {
+    "caught": true,
+    "touched": true,
+    "wrong_touch": false,
+    "wrong_held": false,
+    "min_dist": 0.03571360009252399,
+    "contact_t": 0.139,
+    "first_cmd_t": 0.044,
+    "t_choose": 0.0,
+    "reach": 0.14245310514120638,
+    "speed": 18.0
+  },
+  "physical": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/physical_attempt.json",
+  "physical_sha256": "6815efd3afb576915e1924cab7db478302f6db2a7a5aa6daf57d9f407106a3ea",
+  "finder_numeric": {
+    "frontend": "fused_guarded_GPU_peaks_v230",
+    "accepted": true,
+    "raw_batches": 32,
+    "max_absolute_output_delta": 3.814697265625e-06,
+    "decoded_peak_counts_equal": true,
+    "max_decoded_peak_pixel_delta": 3.0517578125e-05,
+    "physical_gpu": 0,
+    "memory_cap_gib": 1,
+    "actual_executed_peak_batches": 32,
+    "actual_executed_peak_counts_equal": true,
+    "actual_executed_peak_max_pixel_delta": 0.0,
+    "actual_executed_peak_max_score_delta": 5.960464477539063e-08,
+    "executed_peak_evidence": {
+      "path": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/finder_raw_checks/1100060_executed_peaks.npz",
+      "sha256": "bed302f6d219c7242e1a010d330d1d05f0e1d83aebe93d68f82c273a430b6c41",
+      "batches": 32
+    },
+    "CPU_fallback_cameras": 0,
+    "forward_plus_transfer_ms": {
+      "median": 0.8830167353153229,
+      "p95": 1.0493021458387373
+    },
+    "warmup_seconds": 0.660346083343029,
+    "scope": "Post-trial same-weight CPU/GPU raw and actually executed fused/fallback peak check; no physical labels or controller actions",
+    "raw_inputs_outputs": {
+      "path": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/finder_raw_checks/1100060.npz",
+      "sha256": "cd48ad5e3f859f38e8b48d4d326a17054cbcb93f4a0b6ac5ab914025e40a193e"
+    }
+  },
+  "sensor_sha256": {
+    "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/sensor_00.npz": "6303827b12100add18d3638ae024d12fce006104d9773f804aea0234339adf8c",
+    "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/sensor_01.npz": "e26f88793ee19c94a7e199891d7e4383e41b463962ee75cfeb3dc6db15210196",
+    "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/sensor_02.npz": "4a5511c7771795fcbcab7b476e7e24f97eb1d39601064a135f8a688c8ed76444",
+    "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero/sensor_03.npz": "a2042ca4f880df15c76881bc82cdf53f70dc921b5aba2fe2a21dd917589e4cfa"
+  },
+  "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+  "model_calls": 4,
+  "optimizer_steps": 0,
+  "artificial_delay_ms": 0.0,
+  "VLA_gain_proven": false,
+  "causal_delivery_revision": "fused_strict_slot8_v232",
+  "scope": "Actual prerelease RGB/text preparation then fresh flight DVS/state/context only; shared8ms finder slots with guarded fused GPU peaks, original CPU fallback, CPUgrid prewarm/2ms body/.25ms timer budgets never undercharge measured work; initializer only, no new training/gain claim.",
+  "configuration_path": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/configuration.json",
+  "episode_index": 0,
+  "motion_group": 2,
+  "draw_id": "zero",
+  "configuration_sha256": "bfec8223960b6b87495806c2679c9ddb41c015305dc66c3188f80fdda34a294e",
+  "execution_xyz_contract": {
+    "name": "coarse_fast_relative_xyz_only_6cm_rate08_v308",
+    "horizon": 12,
+    "dt": 0.016,
+    "action_dim": 3,
+    "translation_m": 0.06,
+    "translation_rate_mps": 0.8,
+    "normal": "fast_unchanged",
+    "closure": "fast_timer_unchanged",
+    "expiry": "observation_plus_192ms_then_slew_to_zero"
+  },
+  "fixed_control_bridge": false,
+  "training_ready": false,
+  "fresh_on_policy": false,
+  "policy_version": 3,
+  "base_checkpoint_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "joint_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "base_initialization_sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f",
+  "selected_joint_gradient_steps": 16,
+  "raw_RL_steps": 1,
+  "supervised_recovery_steps": 144,
+  "artifact_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "runtime_options_sha256": "8228af0be681cfab970d9551fe4f5818370c60595e045bcc82bce6e99b685f4a",
+  "feature_gate": "outputs/logs/xyz_controlled_045536/candidate_initializer_gate.json",
+  "learned_xyz_output_executed": false,
+  "stochastic_xyz_output_executed": false
+}

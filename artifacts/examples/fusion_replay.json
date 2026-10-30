@@ -1,0 +1,40 @@
+{
+  "scope": "Saved TRAIN feature replay; not full VLA or catch evaluation",
+  "source": "outputs/logs/xyz_supported_control_v708/feature_bank.pt",
+  "source_sha256": "5a67e9bafebbd513609563f577bfeb6e41703da0d9b7660d0725813aca3ce027",
+  "source_row_indices": [
+    8,
+    12,
+    16,
+    20,
+    24,
+    28,
+    32,
+    36
+  ],
+  "geometries": [
+    1100128,
+    1100129,
+    1100008,
+    1100009,
+    1100010,
+    1100011,
+    1100012,
+    1100013
+  ],
+  "excluded_selection_holdouts": [
+    1100057,
+    1100074,
+    1100091,
+    1100103,
+    1100121
+  ],
+  "samples": 8,
+  "shape": [
+    8,
+    12,
+    3
+  ],
+  "tolerance": 5e-06,
+  "parent_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4"
+}

@@ -1,0 +1,222 @@
+[
+  {
+    "copy": "artifacts/evidence/generalization/completion.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/completion.json",
+    "sha256": "e6c388751b8f29188be9ea48d9040e7da1f096aedfda922286d6af57e508bf36"
+  },
+  {
+    "copy": "artifacts/evidence/training/fusion617_decision.json",
+    "original": "outputs/logs/xyz_fusion_hardnegative_v617/decision.json",
+    "sha256": "ff7d50da7aad440fd49549be6c0e685aad134ba2bd7dfe444a3e17fc617f142b"
+  },
+  {
+    "copy": "artifacts/evidence/training/corrected708_decision.json",
+    "original": "outputs/logs/xyz_supported_control_v708/decision.json",
+    "sha256": "e8348be46840b0dfabaa442a62aab65ac309b1c3b4794c4af45c3ad2ef07c575"
+  },
+  {
+    "copy": "artifacts/evidence/latency/earlier_rpc_gate.json",
+    "original": "outputs/logs/xyz_fusion_hardnegative_transport_v621/rpc_gate.json",
+    "sha256": "ab6361bc91109a052855de428a5356eedbb3e79206de430a64dd5b593a92c302"
+  },
+  {
+    "copy": "artifacts/evidence/latency/latest_rpc_gate.json",
+    "original": "outputs/logs/xyz_local_transport_v724/rpc_gate.json",
+    "sha256": "7a8b87327124f541b574d781d9efd432461c49294f8657997dc448af185c67a2"
+  },
+  {
+    "copy": "artifacts/evidence/latency/latest_actual_GPU.json",
+    "original": "outputs/logs/xyz_local_transport_v724/actual_GPU.json",
+    "sha256": "0c944ec979dd2a5b5cc3b238062f1bc503b12565c9f0a3edfeac63b0589d5729"
+  },
+  {
+    "copy": "artifacts/evidence/latency/latest_campaign_decision.json",
+    "original": "outputs/logs/xyz_local_campaign_v726/decision.json",
+    "sha256": "6ee52563b6d2bddbe7be843c27dbb2baf711c0698dbb1f77b45ab4ef62246eb1"
+  },
+  {
+    "copy": "artifacts/evidence/latency/saved_CPU_audit.json",
+    "original": "outputs/logs/xyz_local_watch_065536/latency_saved_CPU_audit.json",
+    "sha256": "c1a58fc320148aa313f8c6f1f213d9c9e030a25114f815e76bc4129f81212ffc"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_mean/mean.json",
+    "sha256": "7f6ce2b82da40869226995dcb39aa007dbd394cbd08094c7cef272cc14809c2c"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_mean/mean_audit.json",
+    "sha256": "5e65d91f7abed8326f5c89ae9dce2e6ca70d6127bb9b4b56712502a6b35615e5"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_mean/actual_GPU.json",
+    "sha256": "2a5d6eb3a9b3d4a81e40e363d96b0db8ada5d95f3d14ebb5154c6a559b404ff4"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_zero/zero.json",
+    "sha256": "fb73b0a655b89d012c3e88eba9c4062586629d7c3eb526a2975aa9dab73bd8cc"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_zero/zero_audit.json",
+    "sha256": "86072733d8ae164144e793f4a8e64f99ef7ff140f7c65ac591df9edf065b3be0"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100125_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100125_zero/actual_GPU.json",
+    "sha256": "762ac188a37f64e333b98c82e6cf79d75236c313487a31ce32a98e5d0e96ca49"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero.json",
+    "sha256": "52c4129ccd752ed79c296e39475874362c24970762cd7ee9707d444e2d5b4765"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/zero_audit.json",
+    "sha256": "11ea0d43057fcc01172963c8a16a9b0a592825216b685faad273414f32e958fc"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_zero/actual_GPU.json",
+    "sha256": "f8004b5c4206324eba9e63306c1c14e344ff86a10bfdbc862e2f758957d5d3ab"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_mean/mean.json",
+    "sha256": "922ecf897ba4ed404c3d3166f0ea605c8975de5f3807625aad4d934ef427baf2"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_mean/mean_audit.json",
+    "sha256": "18dd286ab40f9062f94330d706f16338a0cc4abc4c05ed86e09a56d63dece1e3"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100080_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100080_mean/actual_GPU.json",
+    "sha256": "d5599a2fb7dc2b07ae82339c36aa328904d22248dff73b1016c467d273e9f2b9"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_mean/mean.json",
+    "sha256": "e0fe8bd2d4da0508e0f526fd4f0e6f3ced80ed0319a5013745b9258b0df0e242"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_mean/mean_audit.json",
+    "sha256": "04d3844b1601fe7b4b8f68900eaf1f7b74f10e85792d89a9ccea8a2b4d2dbd7a"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_mean/actual_GPU.json",
+    "sha256": "3aebc54a9f0ca538a3518bcf5b16c80fa27c97ee0ad428e4a5093f13b9134b01"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero.json",
+    "sha256": "e2f5bfc17ff1e1d296402b1e0d54ffdb95ad420d7da7b1657ff53518377c6b68"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero_audit.json",
+    "sha256": "4340ec1684bc9e17cfead1e8dafe175a6cabc85ae2e024b8f8adb764c85c59b9"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100060_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/actual_GPU.json",
+    "sha256": "799aaa2240cc57e76f9eba2adcdc28ddcaf167739a2701ee592de12d03057366"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_zero/zero.json",
+    "sha256": "a81bb53addae0dc481bfdea5aac9900ad054be869d41aff40397509f2c54e1fd"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_zero/zero_audit.json",
+    "sha256": "a767ce59f1746b9fc02d5fbe49bebd736ff16e2c9e63673f30015d1af815ebd6"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_zero/actual_GPU.json",
+    "sha256": "851dc85808832623de1cc9f612a3d02275a79b2d818034ab1d39c0aace949063"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_mean/mean.json",
+    "sha256": "0f197f54e37a68c5b07651ea0304a6bb5a95a36310603d97f6745b794d1ddcf8"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_mean/mean_audit.json",
+    "sha256": "c165bfbadd2e6a5a7c16c5c02f205167789e0e05cb717b985aefbaee2bae58df"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100033_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100033_mean/actual_GPU.json",
+    "sha256": "be72b93fe02e45a910d81ed0c2c41cd11f0dcb80f225f64964b8ab13ceff1841"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_mean/mean.json",
+    "sha256": "dd96eb2ca21e96cf207aac0b38b5422ef33ccb885b96b5f809983740374d5e4e"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_mean/mean_audit.json",
+    "sha256": "a635edd9c29b873308da02bf0877f768eb1be3fe64381767ac512e382c348499"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_mean/actual_GPU.json",
+    "sha256": "e72246eab22f995f68982dbf915ba9add7882bdd2444c2feef14a6b906248085"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_zero/zero.json",
+    "sha256": "90fb326d1ef74ee79ea0fe7e8a5f20d7fe3d43b61eb7d68e4fa0f204cb064b41"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_zero/zero_audit.json",
+    "sha256": "d1b98d10f3af3a1460c4097c94c32e4f96d8e5c9f8837092f2b4f7b0cae777bc"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100079_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100079_zero/actual_GPU.json",
+    "sha256": "108e64ecb74e123f8eee5af09047afc414e698c3a0e0ba085646cde85a9748e8"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_zero/zero.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_zero/zero.json",
+    "sha256": "6e78467e0fe129cba2c42b17917b8d80a37fafc4a5b056d2d82668fd6801c9cc"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_zero/zero_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_zero/zero_audit.json",
+    "sha256": "b4252ebbc5ebb8816854b12cae18c33ed0c46a25c0790d1f131518a2254617cb"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_zero/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_zero/actual_GPU.json",
+    "sha256": "b01b3aa27cdb418dd74b2230781cd2ddd2b3568d2849ce53265ed2115b349607"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_mean/mean.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_mean/mean.json",
+    "sha256": "cec6700340fb7c1a17c9390aa3478f22a8b66c330718753c242c6e968bbc3206"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_mean/mean_audit.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_mean/mean_audit.json",
+    "sha256": "897a53a4b7ea0449dbf341cf3de1af91376359bb6515faa85f7ce4989bc2d109"
+  },
+  {
+    "copy": "artifacts/evidence/generalization/1100122_mean/actual_GPU.json",
+    "original": "outputs/logs/xyz_fusion_generalization_v635/1100122_mean/actual_GPU.json",
+    "sha256": "30ae337a67c606f10334d70eb7221ba6bcef30c7405d70dac03e990d6ba8949e"
+  }
+]

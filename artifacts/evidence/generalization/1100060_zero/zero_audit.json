@@ -1,0 +1,51 @@
+{
+  "accepted": true,
+  "executed_peak_independent_audit": {
+    "accepted": true,
+    "batches": 32,
+    "actual_peak_file_sha256": "bed302f6d219c7242e1a010d330d1d05f0e1d83aebe93d68f82c273a430b6c41",
+    "CPU_CNN_max_raw_delta": 3.814697265625e-06,
+    "max_ordered_actual_peak_pixel_delta": 0.0,
+    "max_ordered_actual_peak_score_delta": 5.960464477539063e-08,
+    "CPU_CNN_max_ordered_peak_pixel_delta": 3.0517578125e-05,
+    "CPU_fallback_cameras": 0,
+    "no_ball_truth_read": true
+  },
+  "report": "outputs/logs/xyz_fusion_generalization_v635/1100060_zero/zero.json",
+  "report_sha256": "e2f5bfc17ff1e1d296402b1e0d54ffdb95ad420d7da7b1657ff53518377c6b68",
+  "mode": "zero",
+  "servo_steps_exact": 596,
+  "fast_commands_exact": 160,
+  "actual_xyz_steps_before_contact": 0,
+  "max_command_delta_cm": 0.0,
+  "max_conditional_IK_reference_delta_cm": 0.0,
+  "meaningful_authority": false,
+  "source_credit": [],
+  "cutoff_t": 0.139,
+  "fast_normal_closure_bit_exact": true,
+  "context_causal_reconstructed": true,
+  "synthetic_delay_ms": 0.0,
+  "model_calls": 4,
+  "observation_contract": "prerelease_condition_live_DVS_state_softsign_joint_decoder_v404",
+  "controlled_environment_exact": true,
+  "prerelease_clock_and_RGB_proof": true,
+  "common_budget_costs_reconstructed": true,
+  "perception_overruns": 0,
+  "body_overruns": 0,
+  "early_perception_overruns": 0,
+  "input_diversity": {
+    "events": 4,
+    "state": 4,
+    "context": 4
+  },
+  "fast_packets_delivered_before_contact": [
+    0.02,
+    0.042,
+    0.066,
+    0.089
+  ],
+  "fast_actual_nonzero_steps_before_contact": 0,
+  "optimizer_steps": 0,
+  "VLA_gain_proven": false,
+  "scope": "New slow-anchor/fresh-input ABI with actual measured delivery and independent context/multi-chunk/servo/IK replay; adapted native/XYZ candidate selected16 joint steps; no optimizer here and no VLA gain claim."
+}

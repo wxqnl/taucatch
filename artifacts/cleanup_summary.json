@@ -1,0 +1,10 @@
+{
+  "archived_files": 20550,
+  "archived_bytes": 6519523628,
+  "removed_cache_bytes": 7059596,
+  "deduplicated_files": 18,
+  "deduplicated_bytes_saved": 11587879866,
+  "original_core_source_bytes_unchanged": true,
+  "raw_training_data_deleted": false,
+  "models_deleted": false
+}

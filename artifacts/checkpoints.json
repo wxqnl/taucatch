@@ -1,0 +1,37 @@
+{
+  "current_policy": "fusion-617",
+  "current_policy_sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4",
+  "full_upstream_initialization_included": false,
+  "files": [
+    {
+      "path": "outputs/models/native_rich_sft_v110/candidate.pt",
+      "bytes": 638546439,
+      "sha256": "3df97e81c06f27be11c083254bfdea2167a7147f8b3a16efb72a57e28a492b1f"
+    },
+    {
+      "path": "outputs/models/finder_v2.pt",
+      "bytes": 360170,
+      "sha256": "bd35d7b3d6bca4338a7241859df3fac7093e562ea4135479191b1578cd9ec87e"
+    },
+    {
+      "path": "outputs/logs/xyz_coarse_joint_v328/candidate.pt",
+      "bytes": 1766284,
+      "sha256": "02bd3084a105ee2a4dd11205a04ae2e89e03a486adf8b70bfea76d872a97272a"
+    },
+    {
+      "path": "outputs/logs/xyz_raw_joint_v411/candidate.pt",
+      "bytes": 21244043,
+      "sha256": "e486bad3c37dbb5ff33010125e0871850eee4c39f44f5f08b7d5cb0843a089e7"
+    },
+    {
+      "path": "outputs/logs/xyz_raw_trust_v482/candidate.pt",
+      "bytes": 21245323,
+      "sha256": "fa097a8b1df29269c004ae42d09b8d435827d049c6d96ea09a6a672c59829bf6"
+    },
+    {
+      "path": "outputs/logs/xyz_fusion_hardnegative_v617/candidate.pt",
+      "bytes": 21557579,
+      "sha256": "80cd6d60d6abd7def74fe8afd7ea5f9ab17a301df52cd836a5ca941d16041fb4"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# CPU fusion-head replay only. Install the CPU PyTorch build appropriate to your platform.
+torch>=2.6,<3

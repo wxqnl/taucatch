@@ -1,0 +1,50 @@
+{
+  "dependencies": [
+    {
+      "role": "SpikeVLA source",
+      "local_path": "/home/user01/Minko/calude/Spike-driven-VLA",
+      "git_head": "887cbdebfddfe9f14bc9c65fa3500576a17a347d",
+      "anchor_source_sha256": {
+        "spikevla/config.py": "18518b5fd116cb82bb68ea49b7f4bce0461586996ad156a2a5d26f620a6031a0",
+        "spikevla/modules/spike_act.py": "4d094dd0a68ef7dbd4617b44e4eff624a0876bd64020c153fdf9e1014154d8f4",
+        "pyproject.toml": "75a1b952f469bcbe94223e9fe02555890cdb059a5b9881706a5c51e8128cf707"
+      },
+      "included": false,
+      "note": "HEAD alone does not assert a clean working tree; anchor hashes identify critical actual files"
+    },
+    {
+      "role": "CTS source",
+      "local_path": "/home/user01/Minko/calude/cts-v1-pretrain",
+      "git_head": "ce1c365a4f0b57682e431481eaff9d320a26975e",
+      "anchor_source_sha256": {
+        "pyproject.toml": "b17ef78f71d4eb57cd604ecd96e6376cacee7cebbd7eacea330cb7797e541254",
+        "experiments/pretrain/common.py": "b2464cf05489459a46c1a99562eeac0ea692c89609c26bc1294547722f8b77e8",
+        "experiments/pretrain/configs/pretrain.json": "ca6c84c77315b875a4ffa6a4dc4c8f743f33e920c2a0f64adf443dbd8482f259",
+        "turbovla/evaluation/runtime.py": "1ee14b5c13f6ba38445458279486c3fb0fcac013528d9d907c28b424ac33191a"
+      },
+      "included": false,
+      "note": "HEAD alone does not assert a clean working tree; anchor hashes identify critical actual files"
+    },
+    {
+      "role": "pretrained initialization",
+      "local_path": "/home/user01/Minko/calude/runs/v1_pretrain_full/checkpoints/spike_driven_vla_pretrain_60000.pth",
+      "sha256": "c9a4ac370f68c1cb4c4d1ccdfd51b820992cf2622064550f4a4343cb0bb2d667",
+      "bytes": 1065439313,
+      "included": false
+    },
+    {
+      "role": "text projection",
+      "local_path": "/home/user01/Minko/calude/runs/v1_pretrain_full_text/text_projection.pth",
+      "sha256": "27e1cbd5120d951e55cfe1b3c57aa02709d0dfc19f12672dc1382e69468767b9",
+      "bytes": 953669,
+      "included": false
+    },
+    {
+      "role": "vision/text offline assets",
+      "local_path": "/home/user01/Minko/spike-new-vla-icml",
+      "included": false,
+      "note": "Match upstream recipe and local model/tokenizer assets; full directory not hashed or bundled"
+    }
+  ],
+  "path_configuration": "taucatch/chooser.py and upstream recipe; see docs/reproduction.md"
+}

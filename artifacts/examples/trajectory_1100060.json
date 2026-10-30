@@ -1,0 +1,11 @@
+{
+  "source": "outputs/logs/xyz_fusion_generalization_v635/1100060_mean/mean/physical_attempt.json",
+  "source_sha256": "6f9ee38179da7b8aa5b8af497ad7ad4b02535651037470085db0b6fb608854eb",
+  "seed": 1100060,
+  "speed_mps": 18,
+  "mode": "VLA",
+  "caught": true,
+  "contact_t": 0.139,
+  "figure_scope": "Saved scoring-side ball truth and actual palm; this visualization is not an online observation or a new trial",
+  "rows": 596
+}

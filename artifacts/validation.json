@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-28",
+  "scope": "CPU-only project cleanup validation; no new VLA inference, catch trial or training",
+  "tests": {
+    "action_chunk_unittest": {
+      "passed": 10,
+      "environment": "taucatch"
+    },
+    "h192_time_grid_pytest": {
+      "passed": 3,
+      "environment": "cts"
+    }
+  },
+  "fusion_replay": {
+    "examples": 8,
+    "shape": [
+      8,
+      12,
+      3
+    ],
+    "max_absolute_error": 8.940696716308594e-08,
+    "tolerance": 5e-06,
+    "passed": true
+  },
+  "core_checkpoint_hashes": {
+    "files": 6,
+    "changed": 0
+  },
+  "archive_restore_dry_run": {
+    "files": 20550,
+    "passed": true,
+    "applied": false
+  },
+  "implementation_files": 112,
+  "monitor_status": "stopped",
+  "new_GPU_work": false,
+  "limitations": [
+    "Full raw SpikeVLA inference not rerun",
+    "Cross-machine full closed-loop launcher not validated",
+    "MuJoCo compile warned about parent/child cone and impratio defaults; existing tests passed"
+  ],
+  "result_figure": "Replotted from all six completed pairs; supersedes obsolete 1/6 progress figure"
+}
