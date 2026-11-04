@@ -567,6 +567,11 @@
       "bytes": 6628
     },
     {
+      "path": "tools/plot_b601.py",
+      "sha256": "a87d51c7dc0a15599b2e85ff7a3c3c5e4f374cebe43ea761ff2da34ba9f874a0",
+      "bytes": 10728
+    },
+    {
       "path": "tools/plot_results.py",
       "sha256": "2f99d5cd2c8b1325887fe5e003d251903f2fa9f1d9053f87bff125bf612b9242",
       "bytes": 2941
@@ -577,14 +582,34 @@
       "bytes": 9194
     },
     {
+      "path": "tools/plot_trace_frames.py",
+      "sha256": "007be9f495e7e0bda0513326ad8d9507888007168fec8c45ccedb69aaed4a96d",
+      "bytes": 1219
+    },
+    {
+      "path": "tools/render_b601_catch.py",
+      "sha256": "618272dd1fb35dbaaad766aaf37d0faa41413ac165471081697870bf3fab3dfa",
+      "bytes": 6411
+    },
+    {
       "path": "tools/render_saved_trajectory.py",
       "sha256": "27c32d99c2b5f9de31f1051d6a664e5275de5dc55c4e7e57d59c8efa849c030d",
       "bytes": 1982
     },
     {
+      "path": "tools/replay_measurements.py",
+      "sha256": "db16d13b744c2289686e20596c176053fd70f362b7c526e6b9b2e6c6c8a94756",
+      "bytes": 3779
+    },
+    {
       "path": "tools/restore_archive.py",
       "sha256": "28030d0e500818440200ded3890edd1ea994b1bc628215dd63b7be7406400ec1",
       "bytes": 2104
+    },
+    {
+      "path": "tools/slice_measure.py",
+      "sha256": "a18379327bd818cac9945bc86dc396ca259b87bc9a0cfe1aa1cebf0714888543",
+      "bytes": 5915
     }
   ]
 }

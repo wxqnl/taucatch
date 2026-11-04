@@ -7,3 +7,6 @@ archive/
 dist/
 data/
 outputs/
+vendor/
+runs_v2/
+data_v2/

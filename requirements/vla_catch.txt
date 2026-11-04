@@ -1,0 +1,14 @@
+# SpikeVLA catching (taucatch/vla_catch); versions as tested on 2026-11-03.
+numpy==1.26.4
+scipy==1.15.3
+mujoco==3.16.0
+torch==2.7.1
+timm==1.0.20
+transformers==4.56.2
+einops==0.8.2
+spikingjelly
+opencv-python==4.11.0.86
+PyOpenGL==3.1.10
+Pillow==12.3.0
+matplotlib==3.10.9
+PyYAML==6.0.3

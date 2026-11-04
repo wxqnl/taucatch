@@ -1,5 +1,7 @@
 # 算法：DVS 快环＋SpikeVLA 慢环
 
+> 这是 10 月融合方案（事件快环 + SpikeVLA 修正）的文档。当前主线是 SpikeVLA 直接出动作、B601 + 五指手接 8 m/s 球，见 [SpikeVLA 接球](spikevla_catch.md)；上真机见 [在 B601 真机上跑](real_robot.md)。
+
 目标是先接稳一个高速网球；固定指令为 `catch the ball`。当前验证环境是 MuJoCo，球速重点为 14、18 m/s。
 
 ![系统结构](figures/handoff_architecture.svg)

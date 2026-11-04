@@ -1,4 +1,32 @@
-# 核心代码导航
+# 代码导航
+
+## 当前主线：SpikeVLA 接球（`taucatch/vla_catch/`）
+
+一次评测的调用顺序：`evaluate.py` 建场景（`collect.make_sim` → `sim` / `b601`），每 4 ms 从 `events.py` 取事件片，`locator.SliceTrack` 测球，`policy` / `fast` 出动作块，`sim.track` 做 IK 和关节伺服。
+
+| 环节 | 源码 | 作用 |
+|---|---|---|
+| 场景 | [sim.py](../taucatch/vla_catch/sim.py)、[b601.py](../taucatch/vla_catch/b601.py)、[openarm_v1.py](../taucatch/vla_catch/openarm_v1.py) | 抛球采样、末端控制、接住判定；B601 的五指手、24 V 力矩–转速线、相机布置 |
+| 事件相机 | [events.py](../taucatch/vla_catch/events.py) | 渲染帧 → 对数亮度变化过阈值的事件；4 ms 一片；轨迹帧 `trace_frame` |
+| 专家 | [expert.py](../taucatch/vla_catch/expert.py)、[rollout.py](../taucatch/vla_catch/rollout.py) | 真实球状态的弹道拦截与合手定时；单次抛球的 500 Hz 控制循环 |
+| 数据 | [collect.py](../taucatch/vla_catch/collect.py)、[data.py](../taucatch/vla_catch/data.py) | 专家示教录成分片；训练样本 = 两路事件图 + 本体状态 + 12 × 7 动作标签 |
+| 策略 | [policy.py](../taucatch/vla_catch/policy.py)、[fast.py](../taucatch/vla_catch/fast.py) | 加载 SpikeVLA（`vendor/spikevla_icml`）；编译、双视角合批、CUDA Graph，3.08 ms |
+| 模型内找球 | [locator.py](../taucatch/vla_catch/locator.py)、[ball.py](../taucatch/vla_catch/ball.py) | 打分器找球、均值漂移测球、三角化、轨迹记忆、重力拟合；`SliceTrack` 每片测一次 |
+| 训练 | [train.py](../taucatch/vla_catch/train.py) | 行为克隆，`--locator --no-velocity --frames trace` |
+| 闭环评测与 DAgger | [evaluate.py](../taucatch/vla_catch/evaluate.py) | 闭环接球、`--record` 录自身轨迹供 DAgger、`--plan-track` / `--mix` 对照 |
+| 运控 base | [baseline.py](../taucatch/vla_catch/baseline.py) | 不用网络：多球事件跟踪 + 专家规划器 |
+| 选球 | [ground.py](../taucatch/vla_catch/ground.py)、[fovea.py](../taucatch/vla_catch/fovea.py)、[objects.py](../taucatch/vla_catch/objects.py) | 指令头在冻结骨干上点出被点名的球；按外观区分物体 |
+| 看手标定 | [handlook.py](../taucatch/vla_catch/handlook.py) | 骨干在 RGB 里找手，得到相机的残余偏移 |
+
+| 工具 | 作用 |
+|---|---|
+| [tools/plot_b601.py](../tools/plot_b601.py) | 从评测 JSON 画 `docs/figures/b601` 的图 |
+| [tools/render_b601_catch.py](../tools/render_b601_catch.py) | 录一次接球并渲染 GIF |
+| [tools/slice_measure.py](../tools/slice_measure.py)、[tools/replay_measurements.py](../tools/replay_measurements.py) | 逐片测量；把测量回放给专家规划器，定位丢分环节 |
+| [tools/plot_trace_frames.py](../tools/plot_trace_frames.py) | 20 ms 事件窗与轨迹帧的对比图 |
+| [tools/fetch_b601.sh](../tools/fetch_b601.sh) | 获取 B601 的 URDF 和网格 |
+
+## 融合方案（10 月）
 
 版本号保留是为了追溯现有权重与实验。推荐按下表顺序阅读。
 

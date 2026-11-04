@@ -2,242 +2,146 @@
 
 # TauCatch
 
-**用事件相机和 SpikeVLA 让机械臂在一次飞行内接住高速球**
+**SpikeVLA 只看两路事件相机，控制 B601 机械臂和五指手，接住 4 m 外抛来的 8 m/s 球**
 
 ![阶段](https://img.shields.io/badge/阶段-仿真完成，准备上真机-2a78d6)
-![仿真](https://img.shields.io/badge/MuJoCo-3.16-1baf7a)
-![Python](https://img.shields.io/badge/Python-3.10%2B-111a24)
-![球速](https://img.shields.io/badge/球速-12–25%20m%2Fs-eb6834)
+![平台](https://img.shields.io/badge/平台-reBot%20B601--DM%20%2B%20五指手-111a24)
+![球速](https://img.shields.io/badge/球速-8%20m%2Fs-eb6834)
+![接住](https://img.shields.io/badge/接住-84.7%25%20(300%20球)-1baf7a)
 
-<img src="docs/figures/roadmap/tennis25_events.gif" width="720" alt="网球 25 m/s，事件相机快环接球，20 倍慢放">
+<img src="docs/figures/b601/catch_8ms.gif" width="760" alt="SpikeVLA 接住 8 m/s 的球，20 倍慢放">
 
-<sub>网球 25 m/s，20 倍慢放。左下是事件相机看到的画面（绿圈为网络找到的球，青色为预测轨迹），右下是 TauCatch 神经元按时间常数排列的活动。出手后 111 ms 接触。</sub>
+<sub>MuJoCo 仿真，20 倍慢放。右侧是两路事件相机的轨迹帧，也是模型唯一的输入；左下是手部特写。球飞行约 0.53 s。</sub>
 
 </div>
 
-球从 3 m 外以 18 m/s 飞来，留给机械臂的时间不到 0.2 秒，1 ms 的误差等于球多飞 1.8 cm。TauCatch 用双目事件相机做毫秒级跟踪和预测，由快环负责把球接住；SpikeVLA 在慢环里给出位置修正，只在按时到达时才被采用。
+球出手后 85 ms 内，SpikeVLA 在模型内找到球、测出轨迹；此后每 4 ms 给出一段 12 × 20 ms 的末端动作，500 Hz 的 IK 和关节伺服执行，手在球到达前 50 ms 合拢。测试时不用任何真值，从拍到事件到动作生效按 20 ms 延迟计，臂按 24 V 电机的力矩–转速线限幅。
 
-## 目录
+## 结果
 
-- [当前进展](#当前进展)
-- [系统结构](#系统结构)
-- [演示](#演示)
-- [主要结果](#主要结果)
-- [快速开始](#快速开始)
-- [仓库结构](#仓库结构)
-- [文档](#文档)
-- [上真机](#上真机)
-- [依赖与许可](#依赖与许可)
+![同一批 300 球](docs/figures/b601/headline.png)
 
-## 当前进展
+| 同一批 300 球，8 m/s，4 m 外 | 接住 |
+|---|---|
+| 真实球状态专家（上限参照） | 97.7% |
+| 专家规划器 + SpikeVLA 的球轨迹 | 91.3% |
+| **SpikeVLA 直接出动作** | **84.7%** |
+| 运控 base（250 Hz 事件跟踪 + 专家规划器） | 83.0% |
 
-| 模块 | 状态 | 说明 |
-|---|---|---|
-| 事件相机快环（仿真） | ✅ 可用 | 从事件流接住 12–25 m/s 的乒乓球和网球；落点在手附近时接住 70–94%，与真实球状态的上限相差不超过 5 个百分点 |
-| TauCatch 预测网络 | ✅ 可用 | 多时间常数神经元在每个时刻都比单一时间常数预测得准；出手瞬间误差 20.2 cm，LSTM 为 29.1 cm |
-| SpikeVLA 接入闭环 | ✅ 已接通 | 融合方案：飞行中请求往返中位 11.49 ms，修正按真实到达时间执行 |
-| SpikeVLA 带来的增益 | ⚠️ 待验证 | 6 组训练外投球：快环单独 4/6，加 SpikeVLA 3/6 |
-| SpikeVLA 端到端直接出动作 | ❌ 暂缓 | 闭环 32 次只接住 0–1 次 |
-| 真机 | ⚪ 待启动 | 推进顺序、硬件和预算见[进展与真机计划](docs/roadmap.md) |
+SpikeVLA 追平运控 base；它的球轨迹比 base 的好（接同一个规划器多 8 个点）。动作头剩下的差距在手的位置上：位置换成规划器的输出就到 90.0%。
 
-## 系统结构
+![每一步的接住率](docs/figures/b601/progress.png)
 
-两条回路并行。快环每毫秒控制机械臂，保证来得及接；慢环里的 SpikeVLA 每次给出 12 段、每段 16 ms 的 XYZ 位置修正（最大 6 cm，限速 0.8 m/s）。修正先经过时间对齐、限幅和过期检查，再叠加到快环的拦截目标上；超过 192 ms 有效期的修正直接作废，不会拖累快环。手掌朝向和闭合时机始终由快环控制。
+细节、瓶颈分析和低速多球场景见 [SpikeVLA 接球](docs/spikevla_catch.md)。
+
+## 系统
 
 ```mermaid
 flowchart LR
-  subgraph FAST["快环 · 毫秒级 · 负责接住"]
-    direction LR
-    A["双目事件相机<br/>640×480，微秒级事件"] --> B["球定位网络<br/>小 CNN，8.5 万参数"]
-    B --> C["三维跟踪与预测<br/>双目 + EKF + TauCatch"]
-    C --> D["拦截规划<br/>每 4 ms 重算接球点和姿态"]
-    D --> E["关节伺服<br/>1 kHz 力矩控制"]
-    E --> F["机械臂 + 手<br/>预成形，按时闭合"]
-  end
-  subgraph SLOW["慢环 · 每 16 ms 一段 · 负责修正与理解指令"]
-    direction LR
-    G["RGB 相机 + 指令<br/>出手前编码一次并缓存"] --> H["SpikeVLA<br/>事件 token + 机器人状态"]
-    H --> I["位置修正块<br/>12 段 × 16 ms，XYZ，最大 6 cm"]
-    I --> J["时间对齐融合<br/>限速 0.8 m/s，迟到即作废"]
-  end
-  A -- 事件 token --> H
-  J -- 叠加修正 --> D
-  classDef fast fill:#e8f1fc,stroke:#2a78d6,color:#111a24;
-  classDef slow fill:#fdeee7,stroke:#eb6834,color:#111a24;
-  class A,B,C,D,E,F fast;
-  class G,H,I,J slow;
+  A["2 × 事件相机<br/>4 ms 一片"] --> B["轨迹帧<br/>每像素最近事件时间"]
+  A --> C["SliceTrack<br/>每片测球 + 重力拟合"]
+  B --> D["SpikeVLA<br/>模型内定位器 + 轨迹记忆"]
+  C -- 改写轨迹记忆 --> D
+  D --> E["动作头<br/>12 × 20 ms，每 4 ms 一次"]
+  E --> F["IK + 关节伺服<br/>500 Hz，24 V 限幅"]
+  D -- 球轨迹 --> G["合手<br/>到达前 50 ms"]
+  F --> H["B601-DM"]
+  G --> I["五指手"]
+  classDef s fill:#e8f1fc,stroke:#2a78d6,color:#111a24;
+  classDef p fill:#e6f6ef,stroke:#1baf7a,color:#111a24;
+  classDef k fill:#fdeee7,stroke:#eb6834,color:#111a24;
+  class A,B,C s
+  class D,E p
+  class F,G,H,I k
 ```
 
-下图是一次记录下来的接球（训练外投球 1100060，18 m/s，SpikeVLA 开启，接住）。四次修正请求都在有效期内到达。
+| | |
+|---|---|
+| 模型 | SpikeVLA（ICML 版 SGSA 视觉 + 动作头），推理 3.08 ms |
+| 训练 | 真实球状态专家示教 + DAgger（自身轨迹上重新标注） |
+| 运控 base | 不用网络：同一事件流做多球跟踪、双目、重力拟合，接专家规划器和合手规则 |
 
-![一次接球的时间线](docs/figures/roadmap/catch_timeline.png)
-
-## 演示
-
-| 长距离：手移动 40 cm | 按指令选球 |
-|:-:|:-:|
-| <img src="docs/figures/roadmap/reach40_pingpong.gif" width="400" alt="长距离接球"> | <img src="docs/figures/roadmap/select_mixed.gif" width="400" alt="按指令选球"> |
-| 乒乓球 16 m/s，带 20 转/秒旋转。半透明的臂是起始位置，橙线是手掌走过的路径。207 ms 接触。 | 指令“接住会到达你左侧的那个球”。SpikeVLA 给每个球编号并选出目标，出手后 33 ms 选定，276 ms 接触。 |
-| **真实速度（网球 25 m/s）** | **训练外投球 1100060 复演** |
-| <img src="docs/figures/roadmap/tennis25_realtime.gif" width="400" alt="真实速度"> | <img src="docs/figures/handoff_saved_trajectory.gif" width="400" alt="保存轨迹复演"> |
-| 整个过程约 0.11 秒，人眼几乎看不清。 | 18 m/s，SpikeVLA 开启，接住。由保存的球与掌心轨迹重绘。 |
-
-## 主要结果
-
-所有接球都在 MuJoCo 仿真中完成。“接住”指接触后在手里保持住，只碰到不算。
-
-### 1. 从事件流接球，已接近真实球状态的上限
-
-每组 64 次投球，落点在手附近 ±15 cm。真值上限是把真实球状态直接交给同一控制器的结果。
-
-<img src="docs/figures/roadmap/events_vs_truth.png" width="720" alt="事件相机快环与真值上限">
-
-| 投球 | 事件相机快环 | 真值上限 |
-|---|---:|---:|
-| 乒乓球 12 m/s | 94% | 92% |
-| 乒乓球 16 m/s，20 转/秒 | 86% | 86% |
-| 网球 15 m/s | 88% | 86% |
-| 网球 20 m/s | 70% | 75% |
-
-### 2. 多时间常数的神经元，比任何单一时间常数都预测得准
-
-快神经元一出手就给出初猜，慢神经元积累证据，修正旋转造成的弯曲。乒乓球预测误差（cm）：
-
-<img src="docs/figures/roadmap/tau_error.png" width="720" alt="预测误差随时间下降">
-
-| 出手后 | 0 ms | 10 ms | 20 ms | 50 ms | 100 ms | 150 ms |
-|---|---:|---:|---:|---:|---:|---:|
-| **TauCatch（多时间常数）** | **20.2** | **16.3** | **15.1** | **7.7** | **3.1** | **1.0** |
-| 单一时间常数 10 ms | 30.4 | 17.1 | 16.2 | 9.9 | 4.3 | 2.2 |
-| LSTM | 29.1 | 18.5 | 14.8 | 8.6 | 4.2 | 2.1 |
-
-### 3. 手要移动得远时，机械臂速度和早期预测决定成败
-
-乒乓球 16 m/s。“快速臂”约相当于手可达 4 m/s、4 g 的高速臂；“普通臂”约为 Panda 的 1.5 倍速度。
-
-<img src="docs/figures/roadmap/long_reach.png" width="720" alt="长距离接球">
-
-| 手移动距离 | 25 cm | 32 cm | 40 cm | 45 cm |
-|---|---:|---:|---:|---:|
-| 快速臂 · 真实球状态 | 83% | 92% | 84% | 27% |
-| 快速臂 · 事件流 | 未测 | 55% | 45% | 19% |
-| 普通臂 · 真实球状态 | 44% | 22% | 9% | 0% |
-
-普通臂在手要移动 30 cm 以上时，即使知道真实轨迹也接不住；快速臂能接住，但事件流的早期预测偏差让一半的接球失败。这段差距是 SpikeVLA 最有机会带来增益的地方。
-
-### 4. SpikeVLA 融合方案：训练外 6 组投球开关对比
-
-同一冻结模型 `fusion-617`，同一组投球，各跑一次快环单独、一次快环加 SpikeVLA，共 12 次仿真、60 次真实模型请求。
-
-| 投球 seed | 1100079 | 1100122 | 1100060 | 1100080 | 1100033 | 1100125 | 合计 |
-|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| 球速 | 14 m/s | 14 m/s | 18 m/s | 18 m/s | 18 m/s | 18 m/s | |
-| 快环单独 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | **4/6** |
-| + SpikeVLA | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | **3/6** |
-
-在 3 个训练中失败的投球上，SpikeVLA 全部救回；这一收益还没有推广到训练外的投球。下一步用至少 50 组冻结留出投球做配对验证。详见[结果与证据](docs/results.md)。
-
-### 5. 时延：飞行中的修正按时交付
-
-| 测量（H100） | 次数 | 中位 | 范围 |
-|---|---:|---:|---:|
-| 飞行中请求往返（RPC） | 48 | 11.49 ms | 10.29–14.67 ms |
-| 从观测到修正可执行 | 48 | 21.57 ms | 17.83–27.23 ms |
-| 出手前选球（指令已缓存，服务端） | 36 | 6.4 ms | P95 6.5 ms |
-
-<img src="docs/figures/roadmap/latency.png" width="720" alt="SpikeVLA 时延">
-
-最慢的一次修正 27.23 ms 到达，远小于 192 ms 的有效期。真机需要在部署用的 GPU 上对采集、计算、传输分段重测。
-
-## 快速开始
+## 快速开始（仿真）
 
 ```bash
-git clone https://github.com/wxqnl/taucatch.git
-cd taucatch
+git clone https://github.com/wxqnl/taucatch.git && cd taucatch
+pip install -r requirements/vla_catch.txt
+tools/fetch_b601.sh                      # B601 的 URDF 和网格（上游无许可证，不随仓库分发）
+
+export MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa VLA_AIM_X=1.3   # 有 EGL 时可用 MUJOCO_GL=egl
+J="--arm b601 --catcher hand --hand-rate 285 --hand-open .26 --lead .05 --bounce .5 --volts 24 --blend .5 --throw-speed 8 --throw-from 4"
+
+# 运控 base（只用本仓库代码）
+python -m taucatch.vla_catch.baseline --select named $J --tosses 100 --out base.json
+# SpikeVLA（需要 vendor/spikevla_icml 和权重，见下）
+python -m taucatch.vla_catch.evaluate --ckpt runs_v2/saim_r1_b601/ema_3000.pt --latency .02 --fast \
+    --close-track --close-hand --slice-track --query-every 0.004 $J --tosses 100 --out ours.json
 ```
 
-以下三步不需要 GPU，不会启动训练或实验：
+CPU 渲染每球约 40 s，按 `--seed` 拆成多进程并行。训练、DAgger、测量回放和画图命令见 [SpikeVLA 接球 §7](docs/spikevla_catch.md#7-复现)。
 
-```bash
-python tools/handoff.py verify          # 按 SHA256 核对证据、源码、权重和图（仅标准库）
-python tools/handoff.py results         # 从原始记录重算 4/6 对 3/6 和飞行时延（仅标准库）
+## 上真机
 
-python -m pip install -r requirements/replay.txt
-CUDA_VISIBLE_DEVICES= python scripts/replay_fusion.py   # CPU 复演融合头，核对保存的 12×3 动作
-```
+<img src="docs/figures/b601/rig_layout.png" width="760" alt="台架布置">
 
-复演核对融合层的计算和 12×3 动作接口；完整闭环的依赖见下文。
+| 步 | 做什么 | 通过标准 |
+|---|---|---|
+| 1 标定 | 相机内外参（掌心 LED + 正运动学）、两相机同步，写回仿真 | 三角化误差 < 1 cm |
+| 2 臂空跑 | 回放仿真接球的关节参考 | 手落后参考的距离与仿真相差 < 1 cm |
+| 3 手 | 测合手用时 | 写进 `--lead` |
+| 4 只看不动 | 人手抛 3–5 m/s，模型在线跑 | 推理 ≤ 4 ms，出手后 100 ms 球速误差 < 10 cm/s |
+| 5 影子运行 | 出动作不执行 | 预测接球点误差 < 2 cm |
+| 6 闭环 | 3 → 5 → 8 m/s，每档 ≥ 50 球 | 接住率可复现 |
+| 7 数据回流 | 整段飞行事后拟合作标签，做 DAgger | 下一档更高 |
 
-<details>
-<summary><b>仿真环境、测试与重绘图</b></summary>
-
-```bash
-# 仿真依赖：MuJoCo 3.16、Ruckig、SciPy、Numba、PyTorch
-python -m pip install -r requirements/simulation.txt
-python -m unittest tests.test_action_chunk           # 动作块协议，10 项
-python -m pytest tests/test_action_h192_195536.py     # 12×16 ms 时间网格，3 项，需要 pytest
-
-# 重绘图
-python -m pip install -r requirements/visualization.txt
-python tools/plot_results.py                          # 6 组配对结果图
-python tools/render_saved_trajectory.py               # 保存轨迹 GIF
-python tools/plot_roadmap.py docs/figures/roadmap   # 进展与真机计划中的图（需要中文字体）
-```
-
-渲染用 CPU 上的 OSMesa（`MUJOCO_GL=osmesa`）。修改代码或图后，先运行 `python tools/handoff.py refresh` 更新校验清单，再运行 `verify`。
-
-</details>
-
-完整闭环还需要两个上游仓库（Spike-driven-VLA 与 CTS 训练框架）、预训练权重和视觉/语言资产，这些不在本仓库内。版本、路径和 SHA 列在 [`artifacts/external_dependencies.json`](artifacts/external_dependencies.json)，步骤见[复现与训练](docs/reproduction.md)。
+硬件清单、布置坐标、标定写回位置、三个硬件接口（`EventSource` / `ArmIO` / `HandIO`）和安全规则见 [在 B601 真机上跑](docs/real_robot.md)。
 
 ## 仓库结构
 
 ```text
 taucatch/
-├── taucatch/            算法实现：事件相机、球定位、EKF、TauCatch、拦截规划、IK、伺服、SpikeVLA 接口
-├── scripts/             实验入口：数据采集、训练、推理服务、闭环评测、审计
-├── tools/               交接与绘图：handoff.py（verify / results / refresh / build）、各类绘图脚本
-├── tests/               动作块协议与时间网格测试
-├── artifacts/
-│   ├── evidence/        原始证据：6 组配对完成报告、逐次请求时间戳、训练记录、传输验收
-│   ├── models/          fusion-617 adapter 与融合头权重
-│   ├── examples/        CPU 复演样本、1100060 轨迹
-│   └── MANIFEST.sha256  全部精选文件的校验清单
-├── docs/                算法、结果、复现、代码导航、硬件、进展与真机计划及其图
-├── requirements/        replay / simulation / visualization 三组最小依赖
-└── third_party/
-    └── mujoco_menagerie/  FR3 机械臂、Shadow Hand、Allegro Hand 模型（Menagerie cda5236）
+├── taucatch/vla_catch/   当前主线：场景（OpenArm v1/v2、B601）、事件相机、专家、数据采集、
+│                         SpikeVLA 策略与定位器、训练、闭环评测、运控 base
+├── taucatch/             10 月的融合方案（事件快环 + SpikeVLA 修正）
+├── tools/                画图、GIF、逐片测量与回放、B601 资产获取、交接校验
+├── docs/                 文档与图（docs/figures/b601 是当前主线的图）
+├── requirements/         vla_catch（当前主线）、replay / simulation / visualization（融合方案）
+├── third_party/          MuJoCo Menagerie（FR3、Shadow、Allegro）、OpenArm 模型
+└── artifacts/            融合方案的证据、权重与校验清单
 ```
 
 ## 文档
 
 | 文档 | 内容 |
 |---|---|
-| [进展与真机计划](docs/roadmap.md) | 进展、真机推进顺序、SpikeVLA 训练步骤、硬件与预算、风险 |
-| [算法说明](docs/algorithm.md) | 输入输出、快慢环如何结合、动作块的时间规则 |
-| [结果与证据](docs/results.md) | 配对成绩、时延、训练与问题定位，每项附原始记录 |
-| [复现与训练](docs/reproduction.md) | 安装、CPU 复演、完整闭环依赖、训练方法 |
+| [SpikeVLA 接球](docs/spikevla_catch.md) | 当前主线：结果、系统、每一步的改动、瓶颈、复现命令 |
+| [在 B601 真机上跑](docs/real_robot.md) | 硬件、布置、标定、接口、上机顺序、安全 |
+| [逐轮记录](docs/spikevla_catch_log.md) | 10-30 以来每一轮的设置、数字和结论 |
 | [代码导航](docs/code_map.md) | 每个模块在哪个文件 |
-| [硬件选型表](docs/hardware.md) | 机械臂、手、相机的选型依据与验收项 |
-| [交接清单](docs/handoff.md) | 交接包内容、权重包、历史归档 |
 
-## 上真机
+## 早期路线：融合方案（10 月）
 
-快环先在真机上接住球并积累数据，SpikeVLA 再用这些数据训练，逐步接管更多控制。
+事件相机快环负责接住，SpikeVLA 只给 XYZ 位置修正。快环从事件流接住 12–25 m/s 的乒乓球和网球（落点在手附近时 70–94%），但 SpikeVLA 的修正在训练外投球上没有带来增益（4/6 vs 3/6），10-30 起改为 SpikeVLA 主导。
 
-| 阶段 | 控制方案 | 做法 | 进入下一阶段 |
-|---|---|---|---|
-| 0 仿真对齐 | 仿真 | 按 FR3 限制重跑；起动提前到 5 ms 内；部署 GPU 上分段测时延 | 首个真机球速确定 |
-| 1 搭台标定 | — | 双目标定；同步线 + PTP；动作捕捉测跟踪误差 | 跟踪误差、链路时延实测完成 |
-| 2 快环接球 | 快环 + 接球杯 | 5 → 8 → 12 m/s；每次投球全量记录 | 每档 ≥50 次，接住率可重复 |
-| 3 SpikeVLA 训练 | 快环控制，SpikeVLA 影子运行 | 动作捕捉事后标签 + 仿真数据训练修正 | 修正后接球点误差低于快环 |
-| 4 融合闭环 | 快环 + SpikeVLA 修正 | 开关配对；闭环数据回流再训练 | ≥50 组配对，接住率更高 |
-| 5 最终形态 | SpikeVLA 选球、修正、接管手掌朝向和闭合 | Allegro 手；多球按指令接 | 按指令接住指定的球 |
+<details>
+<summary>融合方案的演示与文档</summary>
 
-起步硬件：FR3 + 接球杯、双目 DVXplorer、全局快门 RGB 相机、专用 GPU，约 €40–56k；首个目标 8–12 m/s 网球。完整计划、训练步骤和硬件清单见[进展与真机计划](docs/roadmap.md#5-真机计划)。
+| 网球 25 m/s，事件快环 | 按指令选球 |
+|:-:|:-:|
+| <img src="docs/figures/roadmap/tennis25_events.gif" width="380" alt="网球 25 m/s"> | <img src="docs/figures/roadmap/select_mixed.gif" width="380" alt="按指令选球"> |
+
+[进展与真机计划](docs/roadmap.md) · [算法](docs/algorithm.md) · [结果与证据](docs/results.md) · [复现](docs/reproduction.md) · [硬件选型](docs/hardware.md) · [交接清单](docs/handoff.md)
+
+```bash
+python tools/handoff.py verify     # 按 SHA256 核对融合方案的证据、源码、权重和图（仅标准库）
+python tools/handoff.py results    # 从原始记录重算 4/6 对 3/6 和飞行时延
+```
+
+</details>
 
 ## 依赖与许可
 
-- 仿真模型取自 [MuJoCo Menagerie](https://github.com/google-deepmind/mujoco_menagerie) 提交 `cda5236`，未修改，各模型保留其原许可证（见 [`third_party/`](third_party/README.md)）。
-- SpikeVLA 架构与训练框架来自配套上游仓库，不随本仓库分发。
+- SpikeVLA 代码（ICML 版本）放在 `vendor/spikevla_icml`，不随本仓库分发；当前主线的权重和数据（`runs_v2/`、`data_v2/`）也不在仓库内。
+- B601 的 URDF 和网格来自 [reBotArm_control_py](https://github.com/Seeed-Projects/reBotArm_control_py)（提交 `d4f3591`），上游无许可证，由 `tools/fetch_b601.sh` 获取。
+- MuJoCo Menagerie（提交 `cda5236`，见 [`third_party/`](third_party/README.md)）与 OpenArm 模型（[`third_party/openarm_mujoco`](third_party/openarm_mujoco/LICENSE)）保留各自的许可证。
 - 本仓库的研究代码与权重暂未声明开源许可证。

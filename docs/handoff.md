@@ -1,5 +1,7 @@
 # 交接清单与整理范围
 
+> 这是 10 月融合方案（事件快环 + SpikeVLA 修正）的文档。当前主线是 SpikeVLA 直接出动作、B601 + 五指手接 8 m/s 球，见 [SpikeVLA 接球](spikevla_catch.md)；上真机见 [在 B601 真机上跑](real_robot.md)。
+
 对外发送 `dist/spikevla-catch-source.tar.gz` 即可阅读算法、查看证据并做 CPU 复演；需要继续完整模型开发时，加发 `dist/spikevla-catch-checkpoints.tar.gz`，以及另行提供配套的两个上游仓库和模型资产。
 
 | 内容 | 源码交接包 | 本机保留位置 |
