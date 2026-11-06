@@ -23,6 +23,8 @@ import torch.nn.functional as F
 
 from .policy import IMAGE_MEAN, IMAGE_STD, INSTRUCTION
 
+FASTEST = {"compile": True, "batch_views": True, "half": True, "tf32": True, "fold": True}   # GraphPolicy options
+
 
 def _eval_norm(self, current, valid=None, time_index=0):
     """MaskedTemporalBatchNorm.forward in eval mode, without the per-call statistics check (same arithmetic)."""
@@ -38,10 +40,15 @@ def _eval_norm(self, current, valid=None, time_index=0):
 def prepare(model, batch=1, selective=False):
     """Freeze an eval model for graph replay: verified statistics, no host syncs, instruction features fixed;
     selective: instruction features read from buffers [batch, ...] (returned), one row per toss.
-    In eval the VLA encodes one observation at a time; its row is told by the placeholder instruction ROWS[i]."""
-    from turbovla.models.components.wta_operators import MaskedTemporalBatchNorm, verify_running_norms
+    In eval the VLA encodes one observation at a time; its row is told by the placeholder instruction ROWS[i].
+    A released model (taucatch.spikevla) is already in that form."""
     if model.training:
         raise ValueError("fast inference needs an eval model")
+    if getattr(model, "release", False):
+        if selective:
+            raise ValueError("released models hold one instruction")
+        return None
+    from turbovla.models.components.wta_operators import MaskedTemporalBatchNorm, verify_running_norms
     verify_running_norms(model)
     for m in model.modules():
         if isinstance(m, MaskedTemporalBatchNorm):
@@ -289,8 +296,109 @@ def _decoder_folded(self, memories, memory_valid, anchor=None):
     return torch.tanh(currents.unflatten(0, (T, -1)).mean(0))
 
 
+def _cross_folded(self, v, l, padding_l):
+    """taucatch.spikevla SpikeCrossAttention.forward with the T timesteps in the batch (as _sdsa_folded)."""
+    T, bsz, nv = self.timesteps, v.shape[0], v.shape[1]
+    nl = l.shape[1]
+    valid_v = torch.ones((bsz, nv, 1), device=v.device, dtype=torch.bool)
+    valid_l = ~padding_l.unsqueeze(-1)
+    v, l = v.masked_fill(~valid_v, 0.0), l.masked_fill(~valid_l, 0.0)
+    count_v = valid_v.sum(1, keepdim=True).clamp_min(1).to(v.dtype)
+    count_l = valid_l.sum(1, keepdim=True).clamp_min(1).to(l.dtype)
+    fv, fl = _stack_time(valid_v, T), _stack_time(valid_l, T)
+    nodes = self.spike_nodes
+
+    def fire(name, current, valid, scale=1.0):
+        return nodes[name](current, None, scale, valid)[0]
+    input_v = fire("input_v", _stack_time(v, T), fv)
+    input_l = fire("input_l", _stack_time(l, T), fl)
+    q = fire("query_v", F.layer_norm(self.v_proj(input_v), (self.embed_dim,)), fv)
+    k = fire("key_l", F.layer_norm(self.l_proj(input_l), (self.embed_dim,)), fl)
+    vv = fire("value_v", F.layer_norm(self.values_v_proj(input_v), (self.embed_dim,)), fv)
+    vl = fire("value_l", F.layer_norm(self.values_l_proj(input_l), (self.embed_dim,)), fl)
+    q, k = self._shape(q, nv, T * bsz), self._shape(k, nl, T * bsz)
+    vv, vl = self._shape(vv, nv, T * bsz), self._shape(vl, nl, T * bsz)
+    counts = q @ k.transpose(-1, -2)
+    context_v = (counts @ vl).transpose(1, 2).reshape(T * bsz, nv, self.embed_dim)
+    context_l = (counts.transpose(-1, -2) @ vv).transpose(1, 2).reshape(T * bsz, nl, self.embed_dim)
+    dv = self.out_v_proj(fire("context_v", context_v, fv, _stack_time(count_l, T))).unflatten(0, (T, -1))
+    dl = self.out_l_proj(fire("context_l", context_l, fl, _stack_time(count_v, T))).unflatten(0, (T, -1))
+    out_v, out_l = dv[0], dl[0]
+    for t in range(1, T):                      # the loop's summation order
+        out_v, out_l = out_v + dv[t], out_l + dl[t]
+    keep_v = valid_v & valid_l.any(1, keepdim=True)
+    keep_l = valid_l & valid_v.any(1, keepdim=True)
+    return (out_v / T).masked_fill(~keep_v, 0.0), (out_l / T).masked_fill(~keep_l, 0.0)
+
+
+def _text_folded(self, text, padding, blocked):
+    """taucatch.spikevla TextLayer.forward with the T timesteps in the batch."""
+    T = self.timesteps
+    valid = ~padding[..., None]
+    allowed = valid & valid.transpose(-1, -2) & ~blocked
+    out = self.forward_step(_stack_time(text, T), _stack_time(valid, T), _stack_time(allowed, T), {}, 0)
+    return out.unflatten(0, (T, -1)).mean(0)
+
+
+def _sgsa_scores_folded(T):
+    def scores(self, q, k, state):
+        """SGSA.scores on [T * B, ...]: the running mean of the spike match over the timestep blocks."""
+        per_step = (q @ k.transpose(-1, -2)).unflatten(0, (T, -1))
+        total, steps = per_step[0], [per_step[0] / 1]
+        for i in range(1, T):
+            total = total + per_step[i]
+            steps.append(total / (i + 1))
+        return torch.stack(steps).flatten(0, 1) * 2.0 ** -self.shift
+    return scores
+
+
+def fold_release(vla):
+    """fold_time for a released model (taucatch.spikevla) -> number of patched modules."""
+    from taucatch.spikevla.action_head import SGSA
+    from taucatch.spikevla.fusion import SpikeCrossAttention, TextLayer
+    from taucatch.spikevla.neurons import PLIF, TemporalNorm
+    T = vla.timesteps
+    if vla.action_head.timesteps != T:
+        raise ValueError("fold_time covers equal fusion / head timesteps")
+    decoder = vla.action_head.decoder
+    vision, text = vla.vision_projection, vla.text_encoder.text_projection
+    n = 0
+    for scope in (vision, text, vla.vision_language_interaction, decoder):
+        for m in scope.modules():
+            if isinstance(m, PLIF):                     # BipolarPLIF derives from it
+                m.forward = _fold_node(m, T)
+            elif isinstance(m, TemporalNorm):
+                m.forward = types.MethodType(_fold_norm, m)
+            elif isinstance(m, SpikeCrossAttention):
+                m.forward = types.MethodType(_cross_folded, m)
+            elif isinstance(m, TextLayer):
+                m.forward = types.MethodType(_text_folded, m)
+            elif isinstance(m, SGSA):
+                m.scores = types.MethodType(_sgsa_scores_folded(T), m)
+            else:
+                continue
+            n += 1
+    decoder.forward = types.MethodType(_decoder_folded, decoder)
+    # The projections see the same input at every timestep: all T are computed at t = 0, then read back.
+    vision_step, text_step = type(vision).forward_step, type(text).forward_step
+
+    def vision_projection_step(tokens, state, time_index=0):
+        if time_index == 0:
+            state["folded"] = vision_step(vision, _stack_time(tokens, T), {}, 0).unflatten(0, (T, -1))
+        return state["folded"][time_index]
+
+    def text_projection_step(hidden, state, valid, time_index=0):
+        if time_index == 0:
+            state["folded"] = text_step(text, _stack_time(hidden, T), {}, _stack_time(valid, T), 0).unflatten(0, (T, -1))
+        return state["folded"][time_index]
+    vision.forward_step, text.forward_step = vision_projection_step, text_projection_step
+    return n + 3
+
+
 def fold_time(vla):
     """Patch an eval TurboVLA (after prepare) to run its T-step spiking stages folded -> number of patched modules."""
+    if getattr(vla, "release", False):
+        return fold_release(vla)
     from turbovla.models.components.spike_fusion import FunctionalPLIF, SpikeBiMultiHeadAttention
     from turbovla.models.components.spike_text_only import SpikeTextEncoderLayer
     from turbovla.models.components.wta_operators import MaskedTemporalBatchNorm
@@ -345,8 +453,10 @@ class GraphPolicy:
         vla = getattr(model, "vla", model)
         self.selective = getattr(model, "selective", False)
         self.text = prepare(vla, batch, self.selective)
-        self.encode = vla.text_encoder.cached_encode
-        if batch_views:
+        self.encode = getattr(vla.text_encoder, "cached_encode", None)
+        if batch_views and getattr(vla, "release", False):
+            vla.vision_encoder.batch_views = True
+        elif batch_views:
             vla.vision_encoder.config.encode_views_separately = False
         self.swapped = half_spike_convs(vla) if half else 0
         self.folded = fold_time(vla) if fold else 0

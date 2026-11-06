@@ -130,6 +130,12 @@ def main():
                     "only the hand and the located ball")
     ap.add_argument("--anchor", action="store_true", help="with --locator: arm targets on the located ball's path "
                     "(the head picks the time along it and an offset)")
+    ap.add_argument("--intercept", action="store_true", help="with --locator: the head also reads where its own "
+                    "track meets the hand (the expert's intercept on the located ball: time, point - grasp, found)")
+    ap.add_argument("--own-labels", action="store_true", help="arm-position labels from the expert planner on the "
+                    "policy's own (slice) track, not the true ball (ownlabels.py cache)")
+    ap.add_argument("--slice-memory", action="store_true", help="with --locator: once ready, the track memory is "
+                    "the one closed loop with --slice-track gives (slicemem.py cache), not one raw point per call")
     ap.add_argument("--selective", action="store_true", help="RGB views + instruction-conditioned locator "
                     "(collect.py --distractors shards; needs --locator)")
     ap.add_argument("--init", default=None, help="start from a trained catch checkpoint (its arm and frames)")
@@ -147,9 +153,9 @@ def main():
     # Scales from the expert's own tosses: DAgger labels far off the expert's path would stretch them.
     stats = label_stats([t for t in train if not t.meta.get("dagger", False)], args.forecast, ball)
     kw = dict(mode=args.frames, forecast=args.forecast, ball=args.ball, locator=args.locator,
-              no_velocity=args.no_velocity)
-    train_set = CatchDataset(train, stats, augment=True, **kw)
-    val_set = CatchDataset(val, stats, **kw)
+              no_velocity=args.no_velocity, slice_memory=args.slice_memory)
+    train_set = CatchDataset(train, stats, augment=True, own_labels=args.own_labels, **kw)
+    val_set = CatchDataset(val, stats, **kw)          # validation keeps the true-state labels
     print(f"train {len(train)} tosses {len(train_set)} steps, val {len(val)} tosses {len(val_set)} steps", flush=True)
     loader = torch.utils.data.DataLoader(train_set, args.batch, shuffle=True, num_workers=args.workers,
                                          drop_last=True, pin_memory=True, persistent_workers=True)
@@ -171,9 +177,17 @@ def main():
         config["action"]["action_dim"] = 10
     if args.selective:            # the two RGB views follow the event views; their view parameters start fresh
         config["vision"]["num_views"] = 4
-    widen = ball and config["action"]["state_dim"] != 8 + BALL_DIM
+    icept = None
+    if args.intercept:                # B601 geometry as the expert uses it; the ready grasp where the hand waits
+        from .b601 import B601Sim
+        from .locator import INTERCEPT_DIM
+        ready = np.median([t.state8[0, :3] for t in train if not t.meta.get("dagger", False)], 0)
+        icept = [*B601Sim.SHOULDER, B601Sim.REACH, *ready]
+        print("intercept geometry", np.round(icept, 3).tolist(), flush=True)
+    state_dim = 8 + BALL_DIM + (INTERCEPT_DIM if args.intercept else 0)
+    widen = ball and config["action"]["state_dim"] != state_dim
     if ball:
-        config["action"]["state_dim"] = config["action"]["num_state_tokens"] = 8 + BALL_DIM
+        config["action"]["state_dim"] = config["action"]["num_state_tokens"] = state_dim
     model, result = build_model(config, weights, args.condition)
     fresh = set(result.missing_keys)
     if widen:                 # the state encoder gains the ball tokens: train it at the new-parameter rate
@@ -182,6 +196,8 @@ def main():
         from .locator import CatchPolicy
         model = CatchPolicy(model, stats, args.selective)
         model.no_image, model.anchor = args.no_image, args.anchor
+        if icept is not None:
+            model.set_intercept(icept)
         new = {n for n, _ in model.locator.named_parameters()}
         if located:
             missing = model.locator.load_state_dict(located, strict=False).missing_keys
@@ -260,7 +276,7 @@ def main():
                 torch.save({"arm": args.arm, "step": step, "model_config": config, "frames": args.frames,
                             "forecast": args.forecast, "ball": args.ball, "locator": args.locator,
                             "condition": args.condition, "no_velocity": args.no_velocity, "no_image": args.no_image,
-                            "anchor": args.anchor,
+                            "anchor": args.anchor, "intercept": icept,
                             "selective": args.selective,
                             "ema_state_dict": ema.state_dict(), "stats": meta["stats"]}, out / f"ema_{step}.pt")
 

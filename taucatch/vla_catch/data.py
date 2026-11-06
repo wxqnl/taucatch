@@ -41,6 +41,12 @@ class Toss:
             c, d = z["offset_rgb"][i], z["offset_rgb"][i + 1]
             self.rgb, self.rgb_times = z["rgb"][c:d], z["rgb_times"][c:d]
         self.instruction = meta.get("instruction", INSTRUCTION)
+        self.slice = None                  # (memory, valid, ready) per step as closed loop with --slice-track feeds it
+        if "slice_memory" in z:
+            self.slice = tuple(z[k][a:b] for k in ("slice_memory", "slice_valid", "slice_ready"))
+        self.own = None                    # (positions [12, 3], use [12]) per step: the planner on the own track
+        if "own_pos" in z:
+            self.own = (z["own_pos"][a:b], z["own_use"][a:b])
 
     def rgb_frames(self, s):
         """Newest RGB frame pair at least RGB_DELAY old at step s: [2, H, W, 3] (black before the first)."""
@@ -124,6 +130,14 @@ def load_tosses(root, keep=lambda meta: True):
     tosses = []
     for path in sorted(Path(root).glob("shard_*.npz")):
         z = dict(np.load(path))
+        cached = path.parent / f"slicemem_{path.name.removeprefix('shard_')}"     # slicemem.py
+        if cached.exists():
+            c = np.load(cached)
+            z.update(slice_memory=c["memory"], slice_valid=c["valid"], slice_ready=c["ready"])
+        own = path.parent / f"ownlab_{path.name.removeprefix('shard_')}"           # ownlabels.py
+        if own.exists():
+            c = np.load(own)
+            z.update(own_pos=c["pos"], own_use=c["use"])
         meta = json.loads(str(z["meta"]))
         tosses += [Toss(z, i, m) for i, m in enumerate(meta) if keep(m)]
     return tosses
@@ -163,8 +177,18 @@ def denormalize_actions(a, stats):
 
 class CatchDataset(torch.utils.data.Dataset):
     def __init__(self, tosses, stats, augment=False, noise=(0.0, 1e-3), drop=(0.0, 0.2), mode="window",
-                 forecast=False, ball=False, locator=False, no_velocity=False):
+                 forecast=False, ball=False, locator=False, no_velocity=False, slice_memory=False, own_labels=False):
         self.tosses, self.stats, self.augment, self.mode, self.forecast = tosses, stats, augment, mode, forecast
+        self.slice_memory = slice_memory   # the locator memory closed loop gives (slicemem.py cache) once ready
+        if slice_memory:
+            missing = sum(t.slice is None for t in tosses)
+            if missing:
+                raise ValueError(f"{missing} tosses lack a slicemem cache (python -m taucatch.vla_catch.slicemem)")
+        self.own_labels = own_labels       # arm positions from the planner on the own track (ownlabels.py cache)
+        if own_labels:
+            missing = sum(t.own is None for t in tosses)
+            if missing:
+                raise ValueError(f"{missing} tosses lack an ownlab cache (python -m taucatch.vla_catch.ownlabels)")
         self.ball, self.locator, self.no_velocity = ball, locator, no_velocity
         self.noise, self.drop = noise, drop
         self.index = [(i, s) for i, t in enumerate(tosses) for s in range(len(t.times))]
@@ -189,13 +213,20 @@ class CatchDataset(torch.utils.data.Dataset):
         n = len(state)
         state = (state - self.stats["state_mean"][:n]) / self.stats["state_std"][:n]
         labels = t.labels[s]
+        if self.own_labels:
+            pos, use = t.own[0][s], t.own[1][s]
+            labels = labels.copy()
+            labels[use, :3] = pos[use]
         if self.forecast:            # the chunk also predicts where the ball will be
             labels = np.concatenate([labels, t.forecast(s)], axis=1)
         labels = np.clip(normalize_actions(labels, self.stats), -1.0, 1.0)   # DAgger labels can exceed the scale
         out = (torch.from_numpy(frames), torch.from_numpy(state.astype(np.float32)),
                torch.from_numpy(labels.astype(np.float32)), torch.from_numpy(t.mask[s]))
         if self.locator:
-            memory, valid = ball_meter.track_memory(t, s, rng)
+            if self.slice_memory and t.slice[2][s]:
+                memory, valid = t.slice[0][s].astype(np.float32), t.slice[1][s].astype(bool)
+            else:
+                memory, valid = ball_meter.track_memory(t, s, rng)
             gate, target = ball_meter.acquisition(t, s, rng)
             out += tuple(torch.from_numpy(x) for x in (memory, valid, gate, target))
         if t.rgb is not None:

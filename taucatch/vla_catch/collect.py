@@ -199,8 +199,9 @@ def write_shard(path, records):
             arrays.setdefault("rgb_times", []).append(r["rgb"][0])
             arrays.setdefault("rgb", []).append(r["rgb"][1])
             offsets["rgb"].append(offsets["rgb"][-1] + len(r["rgb"][0]))
-        for key in ("step_times", "state8", "labels", "mask"):
-            arrays.setdefault(key, []).append(r[key])
+        for key in ("step_times", "state8", "labels", "mask", "labels_true", "mask_true"):
+            if key in r:
+                arrays.setdefault(key, []).append(r[key])
         offsets["steps"].append(offsets["steps"][-1] + len(r["step_times"]))
         for cam in CAMERAS:
             sl, px, po, ne = r["events"][cam]

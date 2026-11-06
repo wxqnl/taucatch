@@ -1,4 +1,5 @@
-"""SpikeVLA catch policy: the ICML TurboVLA code (vendor/spikevla_icml, not published) with one of three starts.
+"""SpikeVLA catch policy. Released models load with taucatch.spikevla alone (load_release); training builds on the
+ICML TurboVLA code (vendor/spikevla_icml, not published) with one of three starts.
 
     v1       v1 pretrained weights, v1 action head
     v1_sgsa  v1 pretrained weights, SGSA read-out (F7 ifr settings, learned patch positions; new parts fresh)
@@ -149,6 +150,27 @@ def cache_text(model):
         return tuple(torch.cat([r[i] for r in rows]) for i in range(3))
 
     encoder.encode_bert_hidden = cached
+
+
+def release_dir(path):
+    """A released model: a local directory with config.json and model.safetensors, or a Hugging Face repo id."""
+    if (Path(path) / "config.json").is_file():
+        return Path(path)
+    from huggingface_hub import snapshot_download
+    return Path(snapshot_download(repo_id=str(path)))
+
+
+def load_release(path):
+    """Released catch policy -> (locator.CatchPolicy around taucatch.spikevla.SpikeVLA, its config.json)."""
+    from safetensors.torch import load_file
+
+    from taucatch.spikevla import SpikeVLA, read_config
+    from .locator import CatchPolicy
+    directory = release_dir(path)
+    config = read_config(directory)
+    model = CatchPolicy(SpikeVLA(config["model"]), config["stats"])
+    model.load_state_dict(load_file(str(directory / "model.safetensors")))
+    return model, config
 
 
 def pixel_values(frames):

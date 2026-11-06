@@ -10,3 +10,4 @@ outputs/
 vendor/
 runs_v2/
 data_v2/
+weights/

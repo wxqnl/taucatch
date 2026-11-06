@@ -6,7 +6,7 @@ Two processes, since OSMesa gives one renderer per process:
     render: replay the qpos into the scene, render an overview, compose with the trace frames -> GIF
 
     MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa VLA_AIM_X=1.3 CUDA_VISIBLE_DEVICES=5 \\
-        python tools/render_b601_catch.py record 1000086 runs_v2/saim_r1_b601/ema_3000.pt OUT.npz
+        python tools/render_b601_catch.py record 1000086 weights/spikevla-catch-b601 OUT.npz
     MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa VLA_AIM_X=1.3 python tools/render_b601_catch.py render OUT.npz OUT.gif
 """
 import json

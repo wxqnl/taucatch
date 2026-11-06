@@ -562,6 +562,16 @@
       "bytes": 1763
     },
     {
+      "path": "tools/export_release.py",
+      "sha256": "84c1b1b6778d9ba204acb0c051a51f7d2d90ab78ca9e50b7fbb237b331fa4e3d",
+      "bytes": 9025
+    },
+    {
+      "path": "tools/fetch_spikevla_deps.py",
+      "sha256": "2cac6d1efc39b0300d9dd4e33b3efa98ee982a06a7980df3af644d054a3625a8",
+      "bytes": 1301
+    },
+    {
       "path": "tools/handoff.py",
       "sha256": "2bb17dae443d1940df72430f3ed151061668b2a497e51c5f6b4a0d3f4f0f42a1",
       "bytes": 6628
@@ -588,8 +598,8 @@
     },
     {
       "path": "tools/render_b601_catch.py",
-      "sha256": "618272dd1fb35dbaaad766aaf37d0faa41413ac165471081697870bf3fab3dfa",
-      "bytes": 6411
+      "sha256": "e4b39a83eeb49ff0381930ec815a51e83ea405a2f07519c00ad3b91fb0e0f330",
+      "bytes": 6406
     },
     {
       "path": "tools/render_saved_trajectory.py",

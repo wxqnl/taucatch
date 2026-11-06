@@ -57,15 +57,26 @@ def rotation(v):
 
 class Policy:
     def __init__(self, ckpt, fast=False, **fast_options):
-        ck = torch.load(ckpt, map_location="cpu", weights_only=False)
-        self.model, _ = build_model(ck["model_config"], condition=ck.get("condition", False))
-        self.locator = ck.get("locator", False)
-        if self.locator:
-            from .locator import CatchPolicy
-            self.model = CatchPolicy(self.model, ck["stats"], ck.get("selective", False))
-            self.model.no_image = ck.get("no_image", False)
-            self.model.anchor = ck.get("anchor", False)
-        self.model.load_state_dict(ck["ema_state_dict"])
+        """ckpt: a training checkpoint (.pt, needs vendor/spikevla_icml) or a released model (directory or Hugging
+        Face repo id, taucatch.spikevla only)."""
+        if str(ckpt).endswith(".pt"):
+            ck = torch.load(ckpt, map_location="cpu", weights_only=False)
+            self.model, _ = build_model(ck["model_config"], condition=ck.get("condition", False))
+            self.locator = ck.get("locator", False)
+            if self.locator:
+                from .locator import CatchPolicy
+                self.model = CatchPolicy(self.model, ck["stats"], ck.get("selective", False))
+                self.model.no_image = ck.get("no_image", False)
+                self.model.anchor = ck.get("anchor", False)
+                if ck.get("intercept"):
+                    self.model.set_intercept(ck["intercept"])
+            self.model.load_state_dict(ck["ema_state_dict"])
+        else:
+            from .policy import load_release
+            self.model, config = load_release(ckpt)
+            ck = {**config["policy"], "stats": config["stats"]}
+            self.locator = True
+            self.model.no_image, self.model.anchor = ck["no_image"], ck["anchor"]
         self.model.cuda().eval()
         self.stats = {k: np.asarray(v, np.float32) for k, v in ck["stats"].items()}
         self.step = ck["step"]
@@ -122,14 +133,30 @@ class Policy:
         return out
 
 
-def expert_relabel(sim, toss, t, closed):
-    """The expert's label chunk from the current state, simulated on a copy of the scene."""
+class TrackView(EstimateSim):
+    """The scene with the ball where the policy's own track (t0, position, velocity) puts it: ballistic from t0."""
+
+    def __init__(self, sim, track):
+        super().__init__(sim)
+        self.t0, self.p, self.v = track
+
+    def ball_state(self):
+        dt = self.sim.d.time - self.t0
+        return ballistic(self.p, self.v, dt), self.v + GRAVITY * dt
+
+
+TRACK_LABELS = False     # --track-labels: record the expert's chunk on the policy's own track (true-state one kept too)
+
+
+def expert_relabel(sim, toss, t, closed, track=None):
+    """The expert's label chunk from the current state, simulated on a copy of the scene. With track (t0, position,
+    velocity) the expert sees the ball where that track puts it instead of where it is."""
     m, live, q_ref = sim.m, sim.d, sim.q_ref.copy()
     g, R = sim.grasp_point().copy(), sim.site_rot().copy()
     fork = mujoco.MjData(m)
     mujoco.mj_copyData(fork, m, live)
     sim.d = fork
-    expert = Expert(sim)
+    expert = Expert(sim if track is None else TrackView(sim, track))
     expert.reset()
     expert.closed = closed
     release = int(round(toss.hold / PHYSICS_DT))
@@ -377,7 +404,13 @@ def rollout(sim, stream, toss, seed, latency=0.0, record=False, oracle=False, mo
             if record or oracle:
                 label, mask = expert_relabel(sim, toss, t, closed)
                 drift.append(float(np.linalg.norm(actions[0, :3] - label[0, :3])))
-                if record:
+                if record and TRACK_LABELS:
+                    own, own_mask = (label, mask) if planned is None or closed else \
+                        expert_relabel(sim, toss, t, closed, planned)
+                    after = own[:, 6] >= 0.5             # from the planned closure on, the track flies on past the hand
+                    own = np.where(after[:, None], label, own)
+                    steps.append((t, state8, own, own_mask | mask, label, mask))
+                elif record:
                     steps.append((t, state8, label, mask))
                 if oracle:
                     actions = label
@@ -452,6 +485,8 @@ def rollout(sim, stream, toss, seed, latency=0.0, record=False, oracle=False, mo
             instruction=toss.instruction,
             step_times=np.array([s[0] for s in steps], np.float32), state8=np.stack([s[1] for s in steps]),
             labels=np.stack([s[2] for s in steps]), mask=np.stack([s[3] for s in steps]), events=events)
+        if TRACK_LABELS:
+            result["record"].update(labels_true=np.stack([s[4] for s in steps]), mask_true=np.stack([s[5] for s in steps]))
         if rgb_views and not selected:           # a selector's RGB stays with it: the policy trains on events alone
             result["record"]["rgb"] = (np.array([tr for tr, _ in rgb], np.float32), np.stack([f for _, f in rgb]))
     return result
@@ -691,6 +726,8 @@ def main():
     ap.add_argument("--erase-tracks", action="store_true", help="with --event-gate: drop the events around the other balls' "
                     "tracks once the policy holds its ball")
     ap.add_argument("--blind", action="store_true", help="the action head sees empty frames: state tokens alone (not with --fast)")
+    ap.add_argument("--track-labels", action="store_true", help="with --record: label with the expert on the policy's "
+                    "own ball track (labels), the true-state expert kept as labels_true")
     ap.add_argument("--plan-track", action="store_true", help="with --close-track: the expert's planner on the policy's "
                     "ball track drives the arm (where the loss is: track or action head)")
     ap.add_argument("--event-gate", type=float, default=0.0, help="with --close-track: keep only the named ball's events "
@@ -704,6 +741,8 @@ def main():
     ap.add_argument("--selector", default=None, help="selective checkpoint whose instruction match acquires the ball "
                     "for this policy's locator (eager)")
     args = ap.parse_args()
+    global TRACK_LABELS
+    TRACK_LABELS = args.track_labels
     if args.cup_depth:
         from . import b601
         b601.CUP_DEPTH = args.cup_depth

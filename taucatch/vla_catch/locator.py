@@ -39,6 +39,7 @@ FRESH = 143                     # red channel of a pixel whose latest event is 0
 LOST = 4                        # calls without an accepted measurement after which a track is dropped and looked for again
 TAU_MAX = 0.6                   # s: anchored arm targets (CatchPolicy.anchor) lie on the located path up to this far ahead
 OFF_MAX = 0.10                  # m: their largest offset across that path
+INTERCEPT_DIM = 5               # intercept tokens (CatchPolicy.intercept): time, point - grasp, found
 
 
 class BallLocator(nn.Module):
@@ -272,6 +273,7 @@ class CatchPolicy(nn.Module):
     no_image = False                  # the action head gets zero image tokens: it reads the located ball and the hand only
     anchor = False                    # arm targets on the located ball's path: the head picks the time along it and an offset
     snap = False                      # the head's arm targets moved to the nearest point of the located ball's path
+    intercept = None                  # (shoulder xyz, reach, ready grasp xyz): the head also reads the intercept tokens
 
     def __init__(self, vla, stats, selective=False):
         super().__init__()
@@ -285,7 +287,8 @@ class CatchPolicy(nn.Module):
             self.register_buffer(k, torch.as_tensor(np.asarray(stats[k], np.float32)), persistent=False)
         self.register_buffer("up", torch.tensor([0.0, 0.0, 1.0]), persistent=False)
         self.register_buffer("taus", torch.arange(0.0, TAU_MAX + 1e-6, 0.002), persistent=False)
-        _cache_vision()
+        if not getattr(vla, "release", False):          # taucatch.spikevla takes the rows natively
+            _cache_vision()
 
     def anchored(self, actions, ball):
         """Arm channels of the chunk [B, H, D] -> targets on the located ball's path (ball features [B, 7]): channel 0
@@ -322,6 +325,30 @@ class CatchPolicy(nn.Module):
         pos = torch.where(known, (on - self.action_mean[:3]) / self.action_std[:3], raw)
         return torch.cat([pos.to(actions.dtype), actions[..., 3:]], -1)
 
+    def set_intercept(self, values):
+        """values: shoulder xyz, reach, ready grasp xyz of the arm (expert.Expert.intercept's geometry)."""
+        self.intercept = [float(x) for x in values]
+        self.register_buffer("icept", torch.tensor(self.intercept), persistent=False)
+        self.register_buffer("icept_taus", torch.arange(0.0, 1.0, 0.004), persistent=False)
+
+    def intercept_tokens(self, ball, grasp):
+        """Where the located path meets the hand, as the expert picks it (expert.Expert.intercept on the model's own
+        track): ball features [B, 7], grasp [B, 3] (physical) -> [B, 5] normalised: time to it, the point there
+        relative to the grasp, found. Zeros (found -1) until the track holds or with no reachable point."""
+        shoulder, reach, ready = self.icept[:3], self.icept[3], self.icept[4:7]
+        tau = self.icept_taus[None, :, None]
+        p, v = ball[:, None, :3] + grasp[:, None], ball[:, None, 3:6]
+        pts = p + v * tau + 0.5 * self.locator.gravity * tau ** 2                       # [B, T, 3]
+        ok = (pts[..., 2] > 0.45) & ((pts - shoulder).norm(dim=-1) < reach) & (pts[..., 0] > 0.12)
+        dist = (pts - grasp[:, None]).norm(dim=-1)
+        cost = (pts - ready).norm(dim=-1) + 5.0 * (dist - (tau[..., 0] - 0.05).clamp(min=0.0)).clamp(min=0.0)
+        i = torch.where(ok, cost, torch.full_like(cost, 1e9)).argmin(1)
+        found = ok.any(1) & (ball[:, 6] > 0.5)
+        point = pts.gather(1, i[:, None, None].expand(-1, 1, 3))[:, 0] - grasp
+        t = self.icept_taus[i]
+        tok = torch.cat([((t - 0.25) / 0.15)[:, None], point / 0.15], -1)
+        return torch.cat([torch.where(found[:, None], tok, 0.0), found.float()[:, None] * 2 - 1], -1)
+
     def forward(self, instructions, pixel_values, state8, memory, valid, gate=None):
         """state8 normalised [B, 8] -> actions [B, 12, D], logits, memory, valid, ball features (physical)."""
         vla = self.vla
@@ -340,6 +367,8 @@ class CatchPolicy(nn.Module):
         text = sentence(vla, instructions, pixel_values.device) if self.selective else None
         ball, logits, memory, valid = self.locator(tokens[0], pixel_values, grasp, memory, valid, gate, text, tokens[1])
         state = torch.cat([state8, (ball - self.state_mean[8:]) / self.state_std[8:]], -1)
+        if self.intercept is not None:
+            state = torch.cat([state, self.intercept_tokens(ball.float(), grasp.float()).to(state.dtype)], -1)
         if self.selective:                              # the VLA itself reads no stage-2 blocks
             rows = [(row[0], None) for row in rows]
         if self.blind:

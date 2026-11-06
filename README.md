@@ -30,6 +30,12 @@
 
 SpikeVLA 追平运控 base；它的球轨迹比 base 的好（接同一个规划器多 8 个点）。动作头剩下的差距在手的位置上：位置换成规划器的输出就到 90.0%。
 
+| 最快球速（4 m 外，前 100 球） | 8 m/s | 9 m/s | 10 m/s |
+|---|---|---|---|
+| 真实球状态专家 | 98% | 95% | 73% |
+| 专家规划器 + SpikeVLA 的球轨迹 | 87% | 45% | 13% |
+| SpikeVLA 直接出动作 | 84% | 49% | 22% |
+
 ![每一步的接住率](docs/figures/b601/progress.png)
 
 细节、瓶颈分析和低速多球场景见 [SpikeVLA 接球](docs/spikevla_catch.md)。
@@ -63,19 +69,22 @@ flowchart LR
 
 ## 快速开始（仿真）
 
+SpikeVLA 的推理代码在 [`taucatch/spikevla`](taucatch/spikevla)，权重在 Hugging Face [`Minko030/taucatch`](https://huggingface.co/Minko030/taucatch)（`--ckpt` 直接给仓库名，第一次运行自动下载，151 MB）。
+
 ```bash
 git clone https://github.com/wxqnl/taucatch.git && cd taucatch
 pip install -r requirements/vla_catch.txt
 tools/fetch_b601.sh                      # B601 的 URDF 和网格（上游无许可证，不随仓库分发）
+python tools/fetch_spikevla_deps.py      # SpikeVLA 视觉骨干 SDT-V3 的模型源码（同上）
 
 export MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa VLA_AIM_X=1.3   # 有 EGL 时可用 MUJOCO_GL=egl
 J="--arm b601 --catcher hand --hand-rate 285 --hand-open .26 --lead .05 --bounce .5 --volts 24 --blend .5 --throw-speed 8 --throw-from 4"
 
-# 运控 base（只用本仓库代码）
-python -m taucatch.vla_catch.baseline --select named $J --tosses 100 --out base.json
-# SpikeVLA（需要 vendor/spikevla_icml 和权重，见下）
-python -m taucatch.vla_catch.evaluate --ckpt runs_v2/saim_r1_b601/ema_3000.pt --latency .02 --fast \
+# SpikeVLA 直接出动作；加 --plan-track 换成专家规划器接 SpikeVLA 的球轨迹
+python -m taucatch.vla_catch.evaluate --ckpt Minko030/taucatch --latency .02 --fast \
     --close-track --close-hand --slice-track --query-every 0.004 $J --tosses 100 --out ours.json
+# 运控 base（不用网络）
+python -m taucatch.vla_catch.baseline --select named $J --tosses 100 --out base.json
 ```
 
 CPU 渲染每球约 40 s，按 `--seed` 拆成多进程并行。训练、DAgger、测量回放和画图命令见 [SpikeVLA 接球 §7](docs/spikevla_catch.md#7-复现)。
@@ -94,16 +103,17 @@ CPU 渲染每球约 40 s，按 `--seed` 拆成多进程并行。训练、DAgger�
 | 6 闭环 | 3 → 5 → 8 m/s，每档 ≥ 50 球 | 接住率可复现 |
 | 7 数据回流 | 整段飞行事后拟合作标签，做 DAgger | 下一档更高 |
 
-硬件清单、布置坐标、标定写回位置、三个硬件接口（`EventSource` / `ArmIO` / `HandIO`）和安全规则见 [在 B601 真机上跑](docs/real_robot.md)。
+硬件清单、布置坐标、标定写回位置、真机运行时（[`infer.py`](taucatch/vla_catch/infer.py)）和它要的三个硬件接口（`EventSource` / `ArmIO` / `HandIO`）、安全规则见 [在 B601 真机上跑](docs/real_robot.md)。
 
 ## 仓库结构
 
 ```text
 taucatch/
+├── taucatch/spikevla/    SpikeVLA 推理：SDT-V3 骨干、脉冲视觉–语言融合、SGSA 动作头
 ├── taucatch/vla_catch/   当前主线：场景（OpenArm v1/v2、B601）、事件相机、专家、数据采集、
-│                         SpikeVLA 策略与定位器、训练、闭环评测、运控 base
+│                         SpikeVLA 策略与定位器、训练、闭环评测、运控 base、真机运行时（infer.py）
 ├── taucatch/             10 月的融合方案（事件快环 + SpikeVLA 修正）
-├── tools/                画图、GIF、逐片测量与回放、B601 资产获取、交接校验
+├── tools/                画图、GIF、逐片测量与回放、B601 与 SDT-V3 获取、权重导出、交接校验
 ├── docs/                 文档与图（docs/figures/b601 是当前主线的图）
 ├── requirements/         vla_catch（当前主线）、replay / simulation / visualization（融合方案）
 ├── third_party/          MuJoCo Menagerie（FR3、Shadow、Allegro）、OpenArm 模型
@@ -141,7 +151,8 @@ python tools/handoff.py results    # 从原始记录重算 4/6 对 3/6 和飞行
 
 ## 依赖与许可
 
-- SpikeVLA 代码（ICML 版本）放在 `vendor/spikevla_icml`，不随本仓库分发；当前主线的权重和数据（`runs_v2/`、`data_v2/`）也不在仓库内。
+- SpikeVLA 推理代码在 `taucatch/spikevla`，权重在 Hugging Face（`Minko030/taucatch`）。训练和 DAgger 用的 ICML 版代码（`vendor/spikevla_icml`）、训练数据（`data_v2/`）不随仓库分发。
+- SpikeVLA 的视觉骨干是 [Spike-driven Transformer V3](https://github.com/BICLab/Spike-Driven-Transformer-V3)（19M），模型源码上游无许可证，由 `tools/fetch_spikevla_deps.py` 按提交 `00fcd1f` 获取；视觉–语言融合层的双向交叉注意力沿用 [Grounding DINO](https://github.com/IDEA-Research/GroundingDINO)（Apache-2.0）的结构。
 - B601 的 URDF 和网格来自 [reBotArm_control_py](https://github.com/Seeed-Projects/reBotArm_control_py)（提交 `d4f3591`），上游无许可证，由 `tools/fetch_b601.sh` 获取。
 - MuJoCo Menagerie（提交 `cda5236`，见 [`third_party/`](third_party/README.md)）与 OpenArm 模型（[`third_party/openarm_mujoco`](third_party/openarm_mujoco/LICENSE)）保留各自的许可证。
 - 本仓库的研究代码与权重暂未声明开源许可证。

@@ -63,8 +63,8 @@ flowchart LR
 conda create -n vlacatch python=3.10 && conda activate vlacatch
 pip install -r requirements/vla_catch.txt
 tools/fetch_b601.sh                                  # B601 的 URDF 和网格（上游无许可证，不随仓库分发）
-# SpikeVLA 代码（ICML 版本）放在 vendor/spikevla_icml，不公开，单独拷贝
-# 权重：runs_v2/saim_r1_b601/ema_3000.pt（单独拷贝）
+python tools/fetch_spikevla_deps.py                  # SpikeVLA 视觉骨干 SDT-V3 的模型源码（同上）
+huggingface-cli download Minko030/taucatch --local-dir weights/spikevla-catch-b601   # 权重，151 MB
 
 # 真机驱动
 git clone https://github.com/Seeed-Projects/reBotArm_control_py && pip install -e reBotArm_control_py
@@ -75,10 +75,13 @@ git clone https://github.com/Seeed-Projects/reBotArm_control_py && pip install -
 
 ```bash
 export MUJOCO_GL=osmesa PYOPENGL_PLATFORM=osmesa VLA_AIM_X=1.3
-python -m taucatch.vla_catch.evaluate --ckpt runs_v2/saim_r1_b601/ema_3000.pt --fast --close-track --close-hand \
+M=weights/spikevla-catch-b601
+python -m taucatch.vla_catch.evaluate --ckpt $M --fast --close-track --close-hand \
     --slice-track --query-every 0.004 --catcher hand --hand-rate 285 --hand-open .26 --lead .05 --bounce .5 \
     --volts 24 --blend .5 --arm b601 --latency .02 --throw-speed 8 --throw-from 4 --tosses 100
 # 应在 85% 左右（300 球 84.7%）
+python -m taucatch.vla_catch.infer --policy $M --check 10 --out check.json
+# 真机运行时（第 5 节）在仿真里接 10 球，逐球结果与 evaluate --batch 1 相同
 ```
 
 这一行参数就是真机要复现的设置：`--catcher hand …` 是手，`--volts 24` 是电源，`--latency .02` 是从拍到事件到动作生效的时间，`--slice-track --query-every 0.004` 是每 4 ms 测球、每 4 ms 查询模型，`--close-hand` 是按球轨迹合手。
@@ -97,17 +100,29 @@ python -m taucatch.vla_catch.evaluate --ckpt runs_v2/saim_r1_b601/ema_3000.pt --
 
 标定完、相机位姿或视场和仿真不同时，按新位姿在仿真里重录数据再训练（`collect.py` + 一轮 DAgger），模型看到的轨迹帧才和训练时一致。
 
-## 5. 要写的三个硬件接口
+## 5. 真机运行时和三个硬件接口
 
-仓库里还没有真机驱动。真机运行就是 `evaluate.rollout` 去掉渲染和物理，换成下面三个接口，其余（轨迹帧、`SliceTrack`、`Policy`、动作块插值、IK、合手规则）原样复用。
+真机运行时在 [`infer.py`](../taucatch/vla_catch/infer.py)。`Catcher` 是 `evaluate.rollout` 里策略一侧的全部逻辑：轨迹帧、`SliceTrack`、查询节奏（轨迹成立前每 20 ms，之后每 4 ms）、动作块插值、阻尼最小二乘 IK、按球轨迹合手，以及规划器模式（`plan=True`）。`infer.run` 把它接到三个接口上：感知线程收事件片、测球、调模型；主线程 500 Hz 读臂和手、做 IK、发指令。要写的只有这三个接口：
 
-| 接口 | 输入 → 输出 | 频率 | 实现 |
+| 接口 | 方法 | 频率 | 实现 |
 |---|---|---|---|
-| `EventSource` | EVK4 事件流 → 每 4 ms 一片：每路 (像素号, 正事件数, 负事件数)，带片的结束时间 | 250 Hz | `EventsIterator(delta_t=4000)` + 去畸变 + 裁剪缩放 |
-| `ArmIO` | 关节参考 q_ref → MIT 指令；读回 q、q̇ | 500 Hz | `RebotArm.start_control_loop`，`arm.mode_mit(kp, kd)`，`arm.send_mit(q_ref, vel=0, kp, kd, tau=重力补偿)`，`get_positions / get_velocities` |
-| `HandIO` | 张开 / 合手指令；读回指关节角 | ≥ 100 Hz | 按所选五指手的 SDK |
+| `EventSource` | `slice()` → (片的结束时间, 每路 (像素号, 正事件数, 负事件数)) | 250 Hz | `EventsIterator(delta_t=4000)` + 去畸变 + 裁剪缩放；时间用主机的 `time.monotonic` 时钟 |
+| `ArmIO` | `read()` → (q, q̇)；`send(q_ref)` | 500 Hz | `RebotArm.start_control_loop`，`arm.mode_mit(kp, kd)`，`arm.send_mit(q_ref, vel=0, kp, kd, tau=重力补偿)`，`get_positions / get_velocities` |
+| `HandIO` | `read()` → 指关节角；`send(close)` | ≥ 100 Hz | 按所选五指手的 SDK |
 
-IK 用仓库里 B601 的 MuJoCo 模型：每个控制周期把实测 q 写进模型，算阻尼最小二乘的关节参考（与 `sim.track` 相同）。重力补偿用 reBotArm_control_py 的 `controllers/gravity_compensation`，先用它的 `tools/gravity_calibration` 标定。看门狗：60 ms 没有新动作块就回待命姿态。
+```python
+from taucatch.vla_catch.evaluate import Policy
+from taucatch.vla_catch.fast import FASTEST
+from taucatch.vla_catch.infer import Catcher, judge_sim, run
+from taucatch.vla_catch.policy import set_numerics
+
+set_numerics()
+policy = Policy("weights/spikevla-catch-b601", fast=True, **FASTEST)   # 编译 + 双视角合批 + FP16 脉冲卷积 + TF32 + 时间步折叠
+catcher = Catcher(policy, judge_sim(), watchdog=0.06, box=0.4)          # B601 + 五指手的运动学模型，24 V 限速，提前 50 ms 合手
+run(catcher, events, arm, hand, seconds=1.5)                            # 一次抛球：臂在待命姿态时开始
+```
+
+IK 用仓库里 B601 的 MuJoCo 模型：每个控制周期把实测 q、q̇ 写进模型（`infer.observe`），算阻尼最小二乘的关节参考（与 `sim.track` 相同）。重力补偿用 reBotArm_control_py 的 `controllers/gravity_compensation`，先用它的 `tools/gravity_calibration` 标定。`watchdog=0.06`：60 ms 没有新动作块就回待命姿态；`box=0.4`：IK 目标限制在待命点周围 0.4 m 内。仿真里的 20 ms 延迟在真机上由真实时间自己体现，所以 `latency` 保持 0。
 
 ## 6. 上机顺序
 
