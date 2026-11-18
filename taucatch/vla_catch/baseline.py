@@ -414,7 +414,7 @@ def main():
     ap.add_argument("--reader", default=None, help="fovea.py checkpoint, with --select reader")
     ap.add_argument("--patterns", action="store_true", help="objects named by colour and figure")
     ap.add_argument("--unseen-objects", action="store_true", help="with --patterns: combinations never trained on")
-    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601"])
+    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601", "so101"])
     ap.add_argument("--tosses", type=int, default=100)
     ap.add_argument("--seed", type=int, default=EVAL_SEED)
     ap.add_argument("--distractors", type=int, default=0)

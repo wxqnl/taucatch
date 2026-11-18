@@ -2,7 +2,7 @@
   "dependencies": [
     {
       "role": "SpikeVLA source",
-      "local_path": "/home/user01/Minko/calude/Spike-driven-VLA",
+      "local_path": "/home/user01/Minko/calude/taucatch/vendor/spike-driven-vla",
       "git_head": "887cbdebfddfe9f14bc9c65fa3500576a17a347d",
       "anchor_source_sha256": {
         "spikevla/config.py": "18518b5fd116cb82bb68ea49b7f4bce0461586996ad156a2a5d26f620a6031a0",

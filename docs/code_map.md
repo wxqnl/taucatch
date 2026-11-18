@@ -6,7 +6,7 @@
 
 | 环节 | 源码 | 作用 |
 |---|---|---|
-| 场景 | [sim.py](../taucatch/vla_catch/sim.py)、[b601.py](../taucatch/vla_catch/b601.py)、[openarm_v1.py](../taucatch/vla_catch/openarm_v1.py) | 抛球采样、末端控制、接住判定；B601 的五指手、24 V 力矩–转速线、相机布置 |
+| 场景 | [sim.py](../taucatch/vla_catch/sim.py)、[b601.py](../taucatch/vla_catch/b601.py)、[openarm_v1.py](../taucatch/vla_catch/openarm_v1.py)、[so101.py](../taucatch/vla_catch/so101.py)、[pingpong.py](../taucatch/vla_catch/pingpong.py) | 抛球采样、末端控制、接住判定；B601 的五指手、24 V 力矩–转速线、相机布置；SO-101 的舵机模型；OpenArm v2 乒乓球场景（发球机、空气阻力、手、DVS + 两台 RGB） |
 | 事件相机 | [events.py](../taucatch/vla_catch/events.py) | 渲染帧 → 对数亮度变化过阈值的事件；4 ms 一片；轨迹帧 `trace_frame` |
 | 专家 | [expert.py](../taucatch/vla_catch/expert.py)、[rollout.py](../taucatch/vla_catch/rollout.py) | 真实球状态的弹道拦截与合手定时；单次抛球的 500 Hz 控制循环 |
 | 数据 | [collect.py](../taucatch/vla_catch/collect.py)、[data.py](../taucatch/vla_catch/data.py) | 专家示教录成分片；训练样本 = 两路事件图 + 本体状态 + 12 × 7 动作标签 |
@@ -29,6 +29,9 @@
 | [tools/fetch_b601.sh](../tools/fetch_b601.sh) | 获取 B601 的 URDF 和网格 |
 | [tools/fetch_spikevla_deps.py](../tools/fetch_spikevla_deps.py) | 获取 SDT-V3 的模型源码（固定提交，校验 SHA256） |
 | [tools/export_release.py](../tools/export_release.py) | 训练检查点 → 发布的模型目录（`config.json`、`model.safetensors`、模型卡） |
+| [tools/openarm_scene.py](../tools/openarm_scene.py) | OpenArm v2 乒乓球场景：各视角截图和布置图、专家检查、相机布置的误差分析和端到端检查 |
+| [tools/so101_feasibility.py](../tools/so101_feasibility.py)、[tools/so101_step.py](../tools/so101_step.py) | SO-101 接球可行性；舵机阶跃响应实测（在接臂的电脑上跑） |
+| [tools/fetch_so101.sh](../tools/fetch_so101.sh) | 获取 SO-101 的 MJCF 和网格 |
 
 ## 融合方案（10 月）
 

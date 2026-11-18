@@ -10,12 +10,13 @@ decoder's output per spiking time step; a new readout turns its mean into five s
 """
 import os
 import sys
+from pathlib import Path
 
 import torch
 import torch.nn as nn
 
 CTS_ROOT = "/home/user01/Minko/calude/cts-v1-pretrain"
-SPIKEVLA_ROOT = "/home/user01/Minko/calude/Spike-driven-VLA"
+SPIKEVLA_ROOT = str(Path(__file__).resolve().parents[1] / "vendor" / "spike-driven-vla")
 ASSET_ROOT = "/home/user01/Minko/spike-new-vla-icml"
 PRETRAINED = "/home/user01/Minko/calude/runs/v1_pretrain_full/checkpoints/spike_driven_vla_pretrain_60000.pth"
 TEXT_PROJECTION = "/home/user01/Minko/calude/runs/v1_pretrain_full_text/text_projection.pth"

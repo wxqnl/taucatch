@@ -126,6 +126,8 @@ taucatch/
 |---|---|
 | [SpikeVLA 接球](docs/spikevla_catch.md) | 当前主线：结果、系统、每一步的改动、瓶颈、复现命令 |
 | [在 B601 真机上跑](docs/real_robot.md) | 硬件、布置、标定、接口、上机顺序、安全 |
+| [OpenArm v2 乒乓球真机场景](docs/openarm_scene.md) | 远端真机场景定稿：发球机、DVS + 两台第三视角 RGB + 腕部相机的布置、各视角截图、对齐步骤和回传清单 |
+| [SO-101 接球可行性](docs/so101.md) | SO-101 仿真模型、舵机阶跃响应实测脚本、接 3 m/s 左右球的可行性 |
 | [逐轮记录](docs/spikevla_catch_log.md) | 10-30 以来每一轮的设置、数字和结论 |
 | [代码导航](docs/code_map.md) | 每个模块在哪个文件 |
 

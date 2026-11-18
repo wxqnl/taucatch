@@ -52,6 +52,9 @@ def make_sim(arm, distractors=0):
     if arm == "b601":
         from .b601 import B601Sim
         return B601Sim(distractors=distractors)
+    if arm == "so101":
+        from .so101 import SO101Sim
+        return SO101Sim(distractors=distractors)
     if arm == "openarm_v1":
         from .openarm_v1 import OpenArmV1Sim
         return OpenArmV1Sim(distractors=distractors)
@@ -223,7 +226,7 @@ def main():
     ap.add_argument("--tosses", type=int, default=1000)
     ap.add_argument("--shard", type=int, default=250)
     ap.add_argument("--workers", type=int, default=6)
-    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601"])
+    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601", "so101"])
     ap.add_argument("--distractors", type=int, default=0, help="selective catching: balls besides the named one")
     ap.add_argument("--throw-speed", type=float, nargs="+", default=None, help="flat throws: release speed, m/s (one value or low, high)")
     ap.add_argument("--throw-from", type=float, nargs="+", default=[3.0], help="with --throw-speed: metres ahead of the ready point")

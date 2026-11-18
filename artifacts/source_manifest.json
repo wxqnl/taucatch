@@ -188,8 +188,8 @@
     },
     {
       "path": "taucatch/chooser.py",
-      "sha256": "5ea5b9a11b5ce19dc802a909c2e3e49d7d57f66f61b2ce74a63bc0e93af5335a",
-      "bytes": 5347
+      "sha256": "a6133146762167f775a13c061a2c7af50e7df41809ddaccfea78c9a9e8382f23",
+      "bytes": 5400
     },
     {
       "path": "taucatch/compute.py",
@@ -577,6 +577,11 @@
       "bytes": 6628
     },
     {
+      "path": "tools/openarm_scene.py",
+      "sha256": "8b6cac550f5d548610f4cdef52642abc8e8210ef1064391ef0dd6654d0ffbcdb",
+      "bytes": 35801
+    },
+    {
       "path": "tools/plot_b601.py",
       "sha256": "a87d51c7dc0a15599b2e85ff7a3c3c5e4f374cebe43ea761ff2da34ba9f874a0",
       "bytes": 10728
@@ -620,6 +625,16 @@
       "path": "tools/slice_measure.py",
       "sha256": "a18379327bd818cac9945bc86dc396ca259b87bc9a0cfe1aa1cebf0714888543",
       "bytes": 5915
+    },
+    {
+      "path": "tools/so101_feasibility.py",
+      "sha256": "20800d8e93c7a8adb9360fe4794506160043420551d68372c3c80a466603e6b6",
+      "bytes": 7706
+    },
+    {
+      "path": "tools/so101_step.py",
+      "sha256": "a791a8965d3f38b56d93f7a9a32d351d9c40b19be3989bb151cf642834ccd5a8",
+      "bytes": 24321
     }
   ]
 }

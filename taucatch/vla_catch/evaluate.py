@@ -665,7 +665,7 @@ def main():
     ap.add_argument("--latency", type=float, default=0.0, help="seconds from observation to chunk use")
     ap.add_argument("--ensemble", type=float, default=0.0, help="chunk averaging time constant (s); 0: newest chunk")
     ap.add_argument("--out", default=None)
-    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601"])
+    ap.add_argument("--arm", default="openarm", choices=["openarm", "openarm_v1", "b601", "so101"])
     ap.add_argument("--seed", type=int, default=EVAL_SEED)
     ap.add_argument("--record", default=None, help="write visited states with expert labels here (DAgger)")
     ap.add_argument("--shard", type=int, default=100)
